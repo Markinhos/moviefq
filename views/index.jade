@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+    form(role="form", action="/movie", method="POST")
+        div.form-group
+            label(for="searchBox") What are you watching?
+            input#searchBox.form-control(type="text", name="title", placeholder="Type a movie or tv show")
+    each movie in movies
+        p Movie: #{movie.title}
