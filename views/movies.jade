@@ -8,6 +8,14 @@ block content
             label(for="searchBox") What are you watching?
             input#searchBox.form-control(type="text", name="movieName", placeholder="Type a movie or tv show")
     each movie in movies
-        p Movie: #{movie.title}
+        .media
+            a.pull-left
+                img.media-object.movie-thumbnail(src="#{movie.posters.thumbnail}", alt="movie")
+            .media-body
+                h4.media-heading #{movie.title} (#{movie.year})
+                p #{movie.critics_consensus}
+                div.actions
+                    a.pull-left(href="#") I want to watch it
+        hr
     a(href='/logout') Logout
 

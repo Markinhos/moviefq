@@ -1,12 +1,26 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
+	,cryptoHelper = require('./../modules/crypto-helper');
 
-var movieSchema = new mongoose.Schema({
+var Movies = new mongoose.Schema({
 	title: String,
 	description: String,
 	year: Date,
 	rating: Number
 });
 
-mongoose.model('Movie', movieSchema);
+var Users = new mongoose.Schema({
+	user: String,
+	email: {type: String, lowercase: true},
+	fbId: String,
+	password: String,
+	created: {type: Date, default: Date.now},
+	moviesWatched: [Movies]
+});
 
-mongoose.connect('mongodb://localhost/moviefq');
+Users.method('validPassword', function(plainPass){
+	var isValid = null;
+	return cryptoHelper.validatePass(plainPass, this.password);
+});
+
+mongoose.model('User', Users);
+mongoose.model('Movie', Movies);
