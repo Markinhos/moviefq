@@ -8,6 +8,8 @@ module.exports = function (grunt) {
   // load all grunt tasks
   require('load-grunt-tasks')(grunt);
 
+  grunt.loadNpmTasks('grunt-mocha-test');
+
   var reloadPort = 35729, files;
 
   grunt.initConfig({
@@ -15,6 +17,15 @@ module.exports = function (grunt) {
     develop: {
       server: {
         file: 'app.js'
+      }
+    },
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec',
+          growl: 'true'
+        },
+        src: ['test/**/*.js']
       }
     },
     watch: {
