@@ -4,21 +4,34 @@ var mongoose = require('mongoose')
 var Movies = new mongoose.Schema({
 	title: String,
 	description: String,
-	year: Date,
-	rating: Number
+	release_date: Date,
+	rating: Number,
+	thumbnail: String,
+	moviedb_id: String
 });
 
 var Users = new mongoose.Schema({
-	user: String,
+	username: {type: String, required: true},
 	email: {type: String, lowercase: true},
 	fbId: String,
 	password: String,
 	created: {type: Date, default: Date.now},
-	moviesWatched: [Movies]
+	profile: {
+		moviesUnwatched : [Movies],
+		moviesWatched: [Movies],
+		profile_image_url : String
+	}
 });
 
+Users.path('email').validate(function(email){
+   var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+   return emailRegex.test(email);
+}, 'Wrong email');
+
+
+
+
 Users.method('validPassword', function(plainPass){
-	var isValid = null;
 	return cryptoHelper.validatePass(plainPass, this.password);
 });
 

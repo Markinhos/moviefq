@@ -4,19 +4,26 @@ var should = require('should')
 	, users = require('./../model/users')
 	, mongoose = require('mongoose');
 
-var should = require('should');
-
 
 describe('Users CRUD operations', function(){
 
+	User = mongoose.model('User');
+
 	var user_data = {
-		user: 'paco',
+		username: 'paco',
 		password: 'dummypass',
 		email: 'email@test.com'
 	};
 
 	beforeEach(function(done){
-		users.removeAll(done);
+		User.remove({}, function(err){
+			if (err) done(err);
+			else done();
+		});
+	});
+
+	after(function(){
+		mongoose.connection.close();
 	});
 
 	it('empty user list', function(done){
@@ -109,18 +116,15 @@ describe('Users CRUD operations', function(){
 	it('find by user name', function(done){
 		users.addUser(user_data, function(err, user){
 			var user_found = null;
-			users.findUserByName('paco', function(err, user){
+			User.findOne({username : 'paco'}, function(err, user){
 				if (err) done(err);
 				else{
-					user.should.have.property('user', 'paco');
+					user.should.have.property('username', 'paco');
 					done(null, user);
 				}
 			});
 		})
 	});
 
-	after(function(){
-		mongoose.connection.close();
-	});
 
 });
