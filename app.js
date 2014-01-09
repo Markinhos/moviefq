@@ -31,6 +31,11 @@ app.configure('test', function() {
   process.env.PORT = 3001;
 });
 
+app.configure('production', function(){
+  app.use(express.errorHandler());
+  app.set('db-uri', process.env.MONGOHQ_URL);
+});
+
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
