@@ -10,9 +10,10 @@ var express = require('express')
   , movie = require('./routes/movie')
   , http = require('http')  
   , mongoose = require('mongoose')
-  , mongoStore = require('connect-mongodb')
+  , MongoStore = require('connect-mongo')(express)
   , path = require('path')
-  , passport = require('passport');
+  , passport = require('passport')
+  , passportConfig = require('./modules/passportConfig');
 
 var app = express();
 
@@ -26,7 +27,8 @@ app.configure('test', function() {
   app.set('db-uri', 'mongodb://localhost/moviefq-test');
   app.set('view options', {
     pretty: true
-  });  
+  });
+  process.env.PORT = 3001;
 });
 
 app.configure(function(){
@@ -39,9 +41,21 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ store: mongoStore(app.set('db-uri')), secret: 'topsecret' }));
+  app.use(express.session({
+    store: new MongoStore({
+        url: app.set('db-uri')
+      }),
+        secret: 'topsecret'
+  }));
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(function(req, res, next){
+    if(req.isAuthenticated()){
+      res.locals.username = req.user.username;
+      res.locals.user_thumbnail = req.user.profile.profile_image_url;
+    }
+    next();
+  });
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -59,16 +73,25 @@ function checkAuth(req, res, next) {
   }
 }
 
+
 app.get('/', checkAuth, routes.index);
+app.get('/about', checkAuth, routes.about);
 app.get('/signup', user.singupGet);
 app.get('/login', user.loginGet);
 app.get('/logout', user.logout);
-app.get('/movieSearch', movie.searchMovie);
+app.get('/movieSearch', checkAuth, movie.searchMovie);
+app.get('/watchedMovies', checkAuth, movie.watchedMovies);
+app.get('/unwatchedMovies', checkAuth, movie.unwatchedMovies);
+app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email', 'user_friends']}));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/',
+                                      failureRedirect: '/login' }));
 
 
 app.post('/login', auth);
 app.post('/signup', user.signupPost);
-app.post('/movie', movie.saveMovie);
+app.post('/movie', checkAuth, movie.saveMovie);
+app.post('/addWatchedMovie', checkAuth, movie.addWatchedMovie);
+app.post('/addUnwatchedMovie', checkAuth, movie.addUnwatchedMovie);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

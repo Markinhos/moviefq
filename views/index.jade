@@ -1,13 +1,9 @@
-extends layout
+extends loggedLayout
 
 block content
     h1= title
-    p Welcome to #{title}
     form(role="form", action="/movieSearch", method="GET")
         div.form-group
             label(for="searchBox") What are you watching?
             input#searchBox.form-control(type="text", name="movieName", placeholder="Type a movie or tv show")
-    each movie in movies
-        p Movie: #{movie.title}
-    a(href='/logout') Logout
 
