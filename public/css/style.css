@@ -9,3 +9,12 @@ a {
   width: 61px;
   height: 91px;
 }
+.btm-links {
+  padding-bottom: 20px;
+}
+#navigation .user-control {
+  margin-right: 15px;
+}
+.movie .add-watched-control {
+  margin-right: 10px;
+}
