@@ -9,23 +9,23 @@
     "express": "~3.3.4",
     "jade": "~0.34.0",
     "mongoose": "3.8.3",
-    "moviedb" : "0.1.0",
-    "passport": "*",
-    "passport-local" : "*",
-    "passport-facebook" : "1.0.2",
-    "tomatoes" : "0.0.1",
-    "connect-mongo" : "0.4.0",
-    "lodash" : "2.4.1"
+    "moviedb": "0.1.0",
+    "passport-facebook": "1.0.2",
+    "tomatoes": "0.0.1",
+    "connect-mongo": "0.4.0",
+    "lodash": "2.4.1",
+    "passport-local": "~0.1.6",
+    "passport": "~0.1.18",
+    "stylus": "~0.42.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-develop": "~0.2.2",
     "grunt-contrib-watch": "~0.5.3",
     "request": "~2.27.0",
-    "stylus" : "*",
     "time-grunt": "~0.1.1",
     "load-grunt-tasks": "~0.2.0",
-    "grunt-mocha-test": "*",
-    "should": "*"
+    "should": "~2.1.1",
+    "grunt-mocha-test": "~0.8.1"
   }
 }
