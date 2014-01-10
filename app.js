@@ -100,7 +100,7 @@ app.post('/addUnwatchedMovie', checkAuth, movie.addUnwatchedMovie);
 var server = http.createServer(app)
 
 
-passportConfig = require('./modules/passportConfig')(require('os').hostname, server.address().port);
+var passportConfig = require('./modules/passportConfig')(require('os').hostname, app.get('port'));
 
 
 server.listen(app.get('port'), function(err){
