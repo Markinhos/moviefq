@@ -12,8 +12,7 @@ var express = require('express')
   , mongoose = require('mongoose')
   , MongoStore = require('connect-mongo')(express)
   , path = require('path')
-  , passport = require('passport')
-  , passportConfig = require('./modules/passportConfig');
+  , passport = require('passport');
 
 var app = express();
 
@@ -98,6 +97,13 @@ app.post('/movie', checkAuth, movie.saveMovie);
 app.post('/addWatchedMovie', checkAuth, movie.addWatchedMovie);
 app.post('/addUnwatchedMovie', checkAuth, movie.addUnwatchedMovie);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+var server = http.createServer(app)
+
+
+passportConfig = require('./modules/passportConfig')(require('os').hostname, server.address().port);
+
+
+server.listen(app.get('port'), function(err){
+  console.log(err, server.address());
+  console.log("Express server listening on port " + require('os').hostname());
 });
