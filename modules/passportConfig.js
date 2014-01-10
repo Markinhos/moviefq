@@ -4,13 +4,14 @@ var mongoose = require('mongoose')
     , LocalStrategy = require('passport-local').Strategy
     , FacebookStrategy = require('passport-facebook').Strategy;
 
-address = null;
 
 module.exports = function(hostname, port) {
   return new PassportConfig(hostname, port);
 }
 
 function PassportConfig(hostname, port){
+
+  address = null;
   address = 'http://'+hostname+":"+port;
 
   passport.serializeUser(function(user, done) {
@@ -45,7 +46,7 @@ function PassportConfig(hostname, port){
   passport.use(new FacebookStrategy({
       clientID: '562771067124686',
       clientSecret: '19bb6fca7117a5b2f2723a6f5d7eed07',
-      callbackURL: address + "/auth/facebook/callback"
+      callbackURL: "http://tvmoviefq.herokuapp.com/auth/facebook/callback"
     },
     function(accessToken, refreshToken, profile, done) {
       User.findOne({ username: profile.username }, function(err, user) {

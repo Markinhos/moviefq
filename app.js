@@ -86,9 +86,12 @@ app.get('/logout', user.logout);
 app.get('/movieSearch', checkAuth, movie.searchMovie);
 app.get('/watchedMovies', checkAuth, movie.watchedMovies);
 app.get('/unwatchedMovies', checkAuth, movie.unwatchedMovies);
-app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email', 'user_friends']}));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/',
-                                      failureRedirect: '/login' }));
+app.get('/auth/facebook', passport.authenticate('facebook', 
+  {scope: ['email', 'user_friends'], callbackURL: '/auth/facebook/callback' }
+));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', 
+  { callbackURL: '/auth/facebook/callback', successRedirect: '/', failureRedirect: '/login' }
+));
 
 
 app.post('/login', auth);
