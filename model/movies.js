@@ -35,6 +35,13 @@ MovieModel.prototype.listWatchedMovies = function(movie_id, callback){
 
 };
 
+MovieModel.prototype.searchMovies = function(name, callback){
+	this.movieProvider.searchMovie({query: name }, function(err, moviesRes){
+	  	//var sortedResult = _.sortBy(moviesRes.results, function(elem) {return -1 * elem.popularity});
+		callback(null, moviesRes);
+	});
+};
+
 
 //Adds a movie based on the moviedb id. If added already skipped
 MovieModel.prototype._addMovie = function(user_id, movie_id, type, callback) {

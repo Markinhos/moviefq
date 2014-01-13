@@ -12,11 +12,17 @@ describe('Movies', function(){
 
 	var user_f = null;
 	var movieModel = null;
+	var movie_fixture_id = fixtures.movies.Daredevil.id.toString();
 	User = mongoose.model('User');
 	//Add a user before
 	beforeEach(function(done){
 
 		movieModel = new MovieModel(moviesDB);
+
+
+		sinon
+			.stub(moviesDB, 'searchMovie')
+			.yields(null, fixtures.moviesList)
 
 		sinon
 			.stub(moviesDB, 'movieInfo')
@@ -39,6 +45,7 @@ describe('Movies', function(){
 	afterEach(function(done){
 
 		moviesDB.movieInfo.restore();
+		moviesDB.searchMovie.restore();
 		User.remove({}, function(err){
 			if (err) done(err);
 			done();
@@ -46,7 +53,7 @@ describe('Movies', function(){
 	});
 
 	it('Add one unwatched movie', function(done){
-		movieModel.addUnwatchedMovie(user_f._id, '9480', function(err, movie){
+		movieModel.addUnwatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
 			if(err) done(err);
 			else {
 				User.findById(user_f, function(err, user){
@@ -61,10 +68,10 @@ describe('Movies', function(){
 	});
 
 	it('Add two unwatched movie', function(done){
-		movieModel.addUnwatchedMovie(user_f._id, '9480', function(err, movie){
+		movieModel.addUnwatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
 			if(err) done(err);
 			else {
-				movieModel.addUnwatchedMovie(user_f._id, '9480', function(err, movie){
+				movieModel.addUnwatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
 					if (err) done(err);
 					else {
 						User.findById(user_f, function(err, user){
@@ -81,7 +88,7 @@ describe('Movies', function(){
 	});
 
 	it('Add one watched movie', function(done){
-		movieModel.addWatchedMovie(user_f._id, '9480', function(err, movie){
+		movieModel.addWatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
 			if(err) done(err);
 			else {
 				User.findById(user_f._id, function(err, user){
@@ -96,17 +103,17 @@ describe('Movies', function(){
 	});
 
 	it('Add one watched movie from unwatched', function(done){
-		movieModel.addUnwatchedMovie(user_f._id, '9480', function(err, movie){
+		movieModel.addUnwatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
 			if(err) done(err);
 			else {				
-				movieModel.addWatchedMovie(user_f._id, '9480', function(err, movie){
+				movieModel.addWatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
 					if(err) done(err);
 					else {
 						User.findById(user_f._id, function(err, user){
 							if(err) done(err);
 							else {			
 								user.profile.moviesWatched.should.have.length(1);
-								user.profile.moviesUnwatched.should.have.length(0);
+								user.profile.moviesUnwatched.should.be.empty;
 								done();
 							}
 						});
@@ -117,7 +124,7 @@ describe('Movies', function(){
 	});
 
 	it('Remove one watched movie', function(done){
-		movieModel.addWatchedMovie(user_f._id, '9480', function(err, movie){
+		movieModel.addWatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
 			if(err) done(err);
 			else {
 				User.findById(user_f._id, function(err, user){	
@@ -130,7 +137,7 @@ describe('Movies', function(){
 								User.findById(user_f._id, function(err, newUser){
 									if(err) done(err);
 									else{
-										newUser.profile.moviesWatched.should.have.length(0);
+										newUser.profile.moviesWatched.should.be.empty;
 										done();
 									}
 								});						
@@ -141,5 +148,12 @@ describe('Movies', function(){
 			}
 		});
 		
+	});
+
+	it('List a search of movies', function(done){
+		movieModel.searchMovies('Daredevil', function(err, results){
+			results.should.not.be.empty;
+			done();
+		});
 	});
 })

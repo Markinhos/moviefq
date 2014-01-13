@@ -82,13 +82,17 @@ exports.watchedMovies = function(req, res){
 exports.searchMovie = function(req, res){
 	var movieName = req.param('movieName');
 	mdb_config(function(err, config){
-		mdb.searchMovie({query: movieName }, function(err, moviesRes){
+		/*mdb.searchMovie({query: movieName }, function(err, moviesRes){
 			mdb.searchTVShow({query: movieName }, function(err, tvRes){
 			  	var result = _.union(moviesRes.results, tvRes.results);
 				res.render('moviesList', { title: 'Movie search', movies: _.sortBy(result, function(elem) {return -1 * elem.popularity}), 
 					mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 
 			});
+		});*/
+		movieModel.searchMovies(movieName, function(err, result){
+			res.render('moviesList', { title: 'Movie search', movies: result, 
+					mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 
 	});

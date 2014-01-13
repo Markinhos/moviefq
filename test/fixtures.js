@@ -31,4 +31,7 @@ movies = { 'Daredevil' : { adult: false,
   vote_average: 5.1,
   vote_count: 262 }};
 
+moviesList = {"page":1,"results":[{"adult":false,"backdrop_path":"/v89znpPuYKWGqyyfoSSMJ7qNOae.jpg","id":19050,"original_title":"The Bad News Bears in Breaking Training","release_date":"1977-07-08","poster_path":"/eGl9pMHuxpF6jRQG4F65Gslh796.jpg","popularity":0.63733,"title":"The Bad News Bears in Breaking Training","vote_average":4,"vote_count":2},{"adult":false,"backdrop_path":"/mMKahLSpwb9Yj2B0tB6vku3tkGy.jpg","id":239459,"original_title":"No Half Measures: Creating the Final Season of Breaking Bad","release_date":"2013-11-26","poster_path":"/xHOdTG9dqRkzj1K7ohN2JEaVeSs.jpg","popularity":0.697408406850542,"title":"No Half Measures: Creating the Final Season of Breaking Bad","vote_average":7,"vote_count":1}],"total_pages":1,"total_results":2}
+
 exports.movies = movies;
+exports.moviesList = moviesList;
