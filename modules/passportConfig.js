@@ -15,7 +15,6 @@ function PassportConfig(hostname, port){
   address = 'http://'+hostname+":"+port;
 
   passport.serializeUser(function(user, done) {
-    console.log("Serializing user " + user);
     done(null, user._id);
   });
 

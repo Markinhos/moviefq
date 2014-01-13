@@ -44,12 +44,25 @@ exports.addWatchedMovie = function(req, res){
 exports.addUnwatchedMovie = function(req, res){
 	var movie_id = req.param('id');
 
-	movieModel.addUnwatchedMovie(req.user._id, movie_id, function(){
+	movieModel.addUnwatchedMovie(req.user._id, movie_id, function(err){
+		if (err) {
+			console.log(err);			
+		}
 		res.redirect('/unwatchedMovies');
 	});
 }
 
+exports.deleteWatchedMovie = function(req, res) {
+	var movie_id = req.param('id');
+	movieModel.deleteWatchedMovie(req.user._id, movie_id, function(err, user){
+		if(err) {
+			console.log("Error removing the movie: " + err);
+			res.redirect('/watchedMovies');
+		}
+		else res.redirect('/watchedMovies');		
+	});
 
+}
 
 exports.unwatchedMovies = function(req, res){
 	var username = req.user.username;
@@ -58,7 +71,6 @@ exports.unwatchedMovies = function(req, res){
 	this.mdb_config(function(err, config){
 		User.findOne({username: username}, function(err, user){
 			var unwatched_movies = user.profile.moviesUnwatched;
-			console.log(unwatched_movies);
 
 			res.render('moviesList', {title: 'Watchlist', movies: unwatched_movies, unwatched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
@@ -82,10 +94,14 @@ exports.searchMovie = function(req, res){
 	var movieName = req.param('movieName');
 	mdb_config(function(err, config){
 		mdb.searchMovie({query: movieName }, function(err, moviesRes){
-		  	console.log(moviesRes);
-			res.render('moviesList', { title: 'Movie search', movies: moviesRes.results, 
-				mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
+			mdb.searchTVShow({query: movieName }, function(err, tvRes){
+			  	var result = _.union(moviesRes.results, tvRes.results);
+				res.render('moviesList', { title: 'Movie search', movies: _.sortBy(result, function(elem) {return -1 * elem.popularity}), 
+					mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
+
+			});
 		});
+
 	});
 	/*movies.search(movieName, function(err, moviesRes){
 		res.render('movies', { title: 'Movie search', movies: moviesRes});

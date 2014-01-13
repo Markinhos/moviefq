@@ -71,7 +71,6 @@ describe('Movies', function(){
 			if(err) done(err);
 			else {
 				User.findById(user_f._id, function(err, user){
-					console.log('User 1 ' + JSON.stringify(user, undefined, 2));	
 					if(err) done(err);
 					else {					
 						user.profile.moviesWatched.should.have.length(1);
@@ -102,4 +101,31 @@ describe('Movies', function(){
 			}
 		});
 	});
+
+	it('Remove one watched movie', function(done){
+		movies.addWatchedMovie(user_f._id, '348', function(err, movie){
+			if(err) done(err);
+			else {
+				User.findById(user_f._id, function(err, user){	
+					if(err) done(err);
+					else {
+						user.profile.moviesWatched.should.have.length(1);
+						movies.deleteWatchedMovie(user_f._id, movie._id, function(err, callback){
+							if (err) done(err);
+							else{
+								User.findById(user_f._id, function(err, newUser){
+									if(err) done(err);
+									else{
+										newUser.profile.moviesWatched.should.have.length(0);
+										done();
+									}
+								});						
+							}
+						});
+					}
+				});
+			}
+		});
+		
+	})
 })

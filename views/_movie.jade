@@ -25,4 +25,9 @@
                     div.form-group
                         input#addWatchedMovie.form-control(type="hidden", value="#{movie.id}", name="id")
                         button.btn.btn-primary.btn-sm(type="submit") I want to watch it!
+            if (watched_movies)
+                form.add-watched-control(role="form", action="/deleteWatchedMovie", method="POST")
+                    div.form-group
+                        input#deleteWatchedMovie.form-control(type="hidden", value="#{movie.id}", name="id")
+                        button.btn.btn-danger.btn-sm(type="submit") Delete
 hr
