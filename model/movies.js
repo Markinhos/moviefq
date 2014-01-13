@@ -1,6 +1,4 @@
 var mongoose = require('mongoose')
-	, mdb = require('moviedb')('9663f34a62a3a65368393a6cfbe167b5')
-  	, mdbconfig = require('./../modules/moviedbConfiguration')
   	, _ = require('lodash');
 
 Movie = mongoose.model('Movie');
@@ -8,7 +6,9 @@ User = mongoose.model('User');
 
 
 
-MovieModel = function(){};
+MovieModel = function(_movieProvider){
+	this.movieProvider = _movieProvider
+};
 
 
 
@@ -33,12 +33,13 @@ MovieModel.prototype.deleteWatchedMovie = function(user_id, movie_id, callback){
 
 //Adds a movie based on the moviedb id. If added already skipped
 MovieModel.prototype._addMovie = function(user_id, movie_id, type, callback) {
+	var self = this;
 	User.findById(user_id, function(err, user) {
 		if (err) callback("Error finding user " + err);
 		else {
 			var movie = _.find(user.profile[type], {moviedb_id : movie_id});
 			if (!movie) {
-				mdb.movieInfo({ id : movie_id}, function(err, movie) {
+				self.movieProvider.movieInfo({ id : movie_id}, function(err, movie) {
 					if (err) callback(err);
 					else{
 						var newIndex = user.profile[type].push({

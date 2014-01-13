@@ -11,7 +11,6 @@
     "jade": "~0.34.0",
     "mongoose": "3.8.3",
     "moviedb": "https://github.com/Markinhos/moviedb/tarball/0046eab6a27f54e5df32d550015a7677b84eed9a",
-    "tomatoes": "0.0.1",
     "passport-facebook": "1.0.2",
     "connect-mongo": "0.4.0",
     "lodash": "2.4.1",

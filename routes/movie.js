@@ -5,6 +5,8 @@ var mongoose = require('mongoose')
   	, _ = require('lodash');
 
 _mdb_config = null;
+
+var movieModel = new MovieModel(mdbconfig);
 mdb_config = function(callback){
 	if(_mdb_config !== null) callback(null, _mdb_config);
 	else {
@@ -33,8 +35,6 @@ exports.saveMovie = function(req, res){
 
 exports.addWatchedMovie = function(req, res){	
 	var movie_id = req.param('id');
-	var movieModel = new MovieModel();
-	console.log("Movie model " + movieModel);
 	movieModel.addWatchedMovie(req.user._id, movie_id, function(){
 		res.redirect('/watchedMovies');
 	});
@@ -42,8 +42,6 @@ exports.addWatchedMovie = function(req, res){
 
 exports.addUnwatchedMovie = function(req, res){
 	var movie_id = req.param('id');
-	
-	var movieModel = new MovieModel();
 	movieModel.addUnwatchedMovie(req.user._id, movie_id, function(err){
 		if (err) {
 			console.log(err);		
@@ -54,8 +52,6 @@ exports.addUnwatchedMovie = function(req, res){
 
 exports.deleteWatchedMovie = function(req, res) {
 	var movie_id = req.param('id');
-
-	var movieModel = new MovieModel();
 	movieModel.deleteWatchedMovie(req.user._id, movie_id, function(err, user){
 		if(err) {
 			console.log("Error removing the movie: " + err);
