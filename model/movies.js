@@ -7,43 +7,39 @@ Movie = mongoose.model('Movie');
 User = mongoose.model('User');
 
 
-exports.addWatchedMovie = function(user_id, movie_id, callback){
-	removeMovie(user_id, movie_id, 'moviesUnwatched', function(err){
+
+MovieModel = function(){};
+
+
+
+MovieModel.prototype.addWatchedMovie = function(user_id, movie_id, callback){
+	var self = this;
+	this._removeMovie(user_id, movie_id, 'moviesUnwatched', function(err){
 		if(err) callback(err);
 		else {
-			addMovie(user_id, movie_id, 'moviesWatched', callback);	
+			self._addMovie(user_id, movie_id, 'moviesWatched', callback);	
 		}
 	});
+};
+
+MovieModel.prototype.addUnwatchedMovie = function(user_id, movie_id, callback){
+	this._addMovie(user_id, movie_id, 'moviesUnwatched', callback);
 }
 
-exports.addUnwatchedMovie = function(user_id, movie_id, callback){
-	addMovie(user_id, movie_id, 'moviesUnwatched', callback);
-}
-
-exports.deleteWatchedMovie = function(user_id, movie_id, callback){
-	User.findById(user_id, function(err, user){
-		if (err) callback(err);
-		else {			
-			var index;
-			console.log("Movies watched: " + user.profile.moviesWatched);
-			console.log("Ids " + movie_id);
-
-			user.profile.moviesWatched.pull(movie_id);
-			user.save(callback);
-		}
-	});
-}
+MovieModel.prototype.deleteWatchedMovie = function(user_id, movie_id, callback){
+	this._removeMovieById(user_id, movie_id, 'moviesWatched', callback);
+};
 
 
 //Adds a movie based on the moviedb id. If added already skipped
-addMovie = function(user_id, movie_id, type, callback) {
+MovieModel.prototype._addMovie = function(user_id, movie_id, type, callback) {
 	User.findById(user_id, function(err, user) {
-		if (err) console.log("Error finding user");
+		if (err) callback("Error finding user " + err);
 		else {
 			var movie = _.find(user.profile[type], {moviedb_id : movie_id});
 			if (!movie) {
 				mdb.movieInfo({ id : movie_id}, function(err, movie) {
-					if (err) console.log("Error adding movie");
+					if (err) callback(err);
 					else{
 						var newIndex = user.profile[type].push({
 							title : movie.title,
@@ -62,15 +58,15 @@ addMovie = function(user_id, movie_id, type, callback) {
 			}
 			//Is already added
 			else {
-				callback(null, user.profile[type][movie]);
+				callback(null, movie);
 			}
 		}				
 	});
-}
+};
 
 
 //Removes a movie based on the moviedb id
-removeMovie = function(user_id, _moviedb_id, type, callback){
+MovieModel.prototype._removeMovie = function(user_id, _moviedb_id, type, callback){
 	var User = mongoose.model('User');
 	User.findById(user_id, function(err, user){
 		if(err) {
@@ -88,4 +84,17 @@ removeMovie = function(user_id, _moviedb_id, type, callback){
 			}
 		}
 	});
+};
+
+
+MovieModel.prototype._removeMovieById = function(user_id, movie_id, type, callback){
+	User.findById(user_id, function(err, user){
+		if (err) callback(err);
+		else {
+			user.profile[type].pull(movie_id);
+			user.save(callback);
+		}
+	});
 }
+
+exports.MovieModel = MovieModel;

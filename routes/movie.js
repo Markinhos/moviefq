@@ -1,9 +1,7 @@
 var mongoose = require('mongoose')
 	, mdb = require('moviedb')('9663f34a62a3a65368393a6cfbe167b5')
   	, mdbconfig = require('./../modules/moviedbConfiguration')
-  	, tomatoes = require('tomatoes')
-  	, movies = tomatoes('57nwpwxr9x8ke6ksp4rrkz5t')
-  	, movieModel = require('../model/movies')
+  	, MovieModel = require('../model/movies').MovieModel
   	, _ = require('lodash');
 
 _mdb_config = null;
@@ -35,7 +33,8 @@ exports.saveMovie = function(req, res){
 
 exports.addWatchedMovie = function(req, res){	
 	var movie_id = req.param('id');
-
+	var movieModel = new MovieModel();
+	console.log("Movie model " + movieModel);
 	movieModel.addWatchedMovie(req.user._id, movie_id, function(){
 		res.redirect('/watchedMovies');
 	});
@@ -43,10 +42,11 @@ exports.addWatchedMovie = function(req, res){
 
 exports.addUnwatchedMovie = function(req, res){
 	var movie_id = req.param('id');
-
+	
+	var movieModel = new MovieModel();
 	movieModel.addUnwatchedMovie(req.user._id, movie_id, function(err){
 		if (err) {
-			console.log(err);			
+			console.log(err);		
 		}
 		res.redirect('/unwatchedMovies');
 	});
@@ -54,6 +54,8 @@ exports.addUnwatchedMovie = function(req, res){
 
 exports.deleteWatchedMovie = function(req, res) {
 	var movie_id = req.param('id');
+
+	var movieModel = new MovieModel();
 	movieModel.deleteWatchedMovie(req.user._id, movie_id, function(err, user){
 		if(err) {
 			console.log("Error removing the movie: " + err);

@@ -1,7 +1,7 @@
 var should = require('should')
 	, helper = require('./helper')
 	, app = require('./../app.js')
-	, movies = require('./../model/movies')
+	, MovieModel = require('./../model/movies').MovieModel
 	, mongoose = require('mongoose');
 
 
@@ -32,7 +32,8 @@ describe('Movies', function(){
 	});
 
 	it('Add one unwatched movie', function(done){
-		movies.addUnwatchedMovie(user_f._id, '349', function(err, movie){
+		movieModel = new MovieModel();
+		movieModel.addUnwatchedMovie(user_f._id, '349', function(err, movie){
 			if(err) done(err);
 			else {
 				User.findById(user_f, function(err, user){
@@ -47,10 +48,11 @@ describe('Movies', function(){
 	});
 
 	it('Add two unwatched movie', function(done){
-		movies.addUnwatchedMovie(user_f._id, '349', function(err, movie){
+		movieModel = new MovieModel();
+		movieModel.addUnwatchedMovie(user_f._id, '349', function(err, movie){
 			if(err) done(err);
 			else {
-				movies.addUnwatchedMovie(user_f._id, '349', function(err, movie){
+				movieModel.addUnwatchedMovie(user_f._id, '349', function(err, movie){
 					if (err) done(err);
 					else {
 						User.findById(user_f, function(err, user){
@@ -67,7 +69,8 @@ describe('Movies', function(){
 	});
 
 	it('Add one watched movie', function(done){
-		movies.addWatchedMovie(user_f._id, '348', function(err, movie){
+		movieModel = new MovieModel();
+		movieModel.addWatchedMovie(user_f._id, '348', function(err, movie){
 			if(err) done(err);
 			else {
 				User.findById(user_f._id, function(err, user){
@@ -82,10 +85,11 @@ describe('Movies', function(){
 	});
 
 	it('Add one watched movie from unwatched', function(done){
-		movies.addUnwatchedMovie(user_f._id, '348', function(err, movie){
+		movieModel = new MovieModel();
+		movieModel.addUnwatchedMovie(user_f._id, '348', function(err, movie){
 			if(err) done(err);
 			else {				
-				movies.addWatchedMovie(user_f._id, '348', function(err, movie){
+				movieModel.addWatchedMovie(user_f._id, '348', function(err, movie){
 					if(err) done(err);
 					else {
 						User.findById(user_f._id, function(err, user){
@@ -103,14 +107,15 @@ describe('Movies', function(){
 	});
 
 	it('Remove one watched movie', function(done){
-		movies.addWatchedMovie(user_f._id, '348', function(err, movie){
+		movieModel = new MovieModel();
+		movieModel.addWatchedMovie(user_f._id, '348', function(err, movie){
 			if(err) done(err);
 			else {
 				User.findById(user_f._id, function(err, user){	
 					if(err) done(err);
 					else {
 						user.profile.moviesWatched.should.have.length(1);
-						movies.deleteWatchedMovie(user_f._id, movie._id, function(err, callback){
+						movieModel.deleteWatchedMovie(user_f._id, movie._id, function(err, callback){
 							if (err) done(err);
 							else{
 								User.findById(user_f._id, function(err, newUser){
