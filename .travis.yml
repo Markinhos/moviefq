@@ -1,4 +1,11 @@
 language: node_js
 node_js:
-  - 0.10
+- 0.1
 services: mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: EBCQYKdkgKoURo2JxqSyUPr+2W/pdZAzTn5Pos9cV2yoHZOUVAZPlKwEP3nrqXq4j1iFGjfmskqU05oMXj5Y+l/zd+XIBZm4Pw14G9MJvWfacoQNw9q0QAbZzE/R2QHUfaPcvqPW4W1VxJ11AvKvZ9+jdAH14wYbviFYBiAY5JA=
+  app: tvmoviefq
+  on:
+    repo: Markinhos/moviefq
