@@ -1,12 +1,12 @@
 var mongoose = require('mongoose')
-	, mdb = require('moviedb')('9663f34a62a3a65368393a6cfbe167b5')
+	, moviesDB = require('moviedb')('9663f34a62a3a65368393a6cfbe167b5')
   	, mdbconfig = require('./../modules/moviedbConfiguration')
   	, MovieModel = require('../model/movies').MovieModel
   	, _ = require('lodash');
 
 _mdb_config = null;
 
-var movieModel = new MovieModel(mdbconfig);
+var movieModel = new MovieModel(moviesDB);
 mdb_config = function(callback){
 	if(_mdb_config !== null) callback(null, _mdb_config);
 	else {
@@ -23,15 +23,6 @@ mdb_config = function(callback){
 
 
 var Movie = mongoose.model('Movie');
-
-exports.saveMovie = function(req, res){
-	/*Movie.create({title: req.param('title')}, function(err, movie){
-		if (err) console.log('Error creating movie');
-		else{
-			res.redirect('/');
-		}
-	});*/
-};
 
 exports.addWatchedMovie = function(req, res){	
 	var movie_id = req.param('id');

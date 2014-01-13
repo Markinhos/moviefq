@@ -96,7 +96,6 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook',
 
 app.post('/login', auth);
 app.post('/signup', user.signupPost);
-app.post('/movie', checkAuth, movie.saveMovie);
 app.post('/addWatchedMovie', checkAuth, movie.addWatchedMovie);
 app.post('/addUnwatchedMovie', checkAuth, movie.addUnwatchedMovie);
 app.post('/deleteWatchedMovie', checkAuth, movie.deleteWatchedMovie);

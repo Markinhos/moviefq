@@ -31,6 +31,11 @@ MovieModel.prototype.deleteWatchedMovie = function(user_id, movie_id, callback){
 };
 
 
+MovieModel.prototype.listWatchedMovies = function(movie_id, callback){
+
+};
+
+
 //Adds a movie based on the moviedb id. If added already skipped
 MovieModel.prototype._addMovie = function(user_id, movie_id, type, callback) {
 	var self = this;
@@ -40,6 +45,7 @@ MovieModel.prototype._addMovie = function(user_id, movie_id, type, callback) {
 			var movie = _.find(user.profile[type], {moviedb_id : movie_id});
 			if (!movie) {
 				self.movieProvider.movieInfo({ id : movie_id}, function(err, movie) {
+					console.log(movie);
 					if (err) callback(err);
 					else{
 						var newIndex = user.profile[type].push({
