@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "node app",
+    "test" : "make test"
   },
   "dependencies": {
     "express": "~3.3.4",
@@ -26,6 +27,7 @@
     "time-grunt": "~0.1.1",
     "load-grunt-tasks": "~0.2.0",
     "should": "~2.1.1",
-    "grunt-mocha-test": "~0.8.1"
+    "grunt-mocha-test": "~0.8.1",
+    "mocha": "~1.17.0"
   }
 }
