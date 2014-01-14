@@ -1,0 +1,16 @@
+extends loggedLayout
+
+block content
+    .row
+        .col-xs-12
+            h1= title
+            p Your friends
+            each friend in friends
+                .row
+                	.col-sm-2
+                		a.pull-left.thumbnail
+                			img.media-object.profile-thumbnail(src="#{friend_thumbnail}")
+                	.col-sm-10
+                		.row                			
+                			p.friend-name #{friend.name}
+
