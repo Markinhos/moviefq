@@ -3,11 +3,13 @@ var mongoose = require('mongoose')
 
 var Movies = new mongoose.Schema({
 	title: String,
-	description: String,
+	overview: String,
 	release_date: Date,
 	rating: Number,
 	thumbnail: String,
-	moviedb_id: String
+	moviedb_id: String,
+	genres: [{ id: String, name: String}],
+	idmb_id: String
 });
 
 var Users = new mongoose.Schema({

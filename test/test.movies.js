@@ -156,4 +156,49 @@ describe('Movies', function(){
 			done();
 		});
 	});
+
+	it('List watched movies', function(done){
+		movieModel.addWatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
+			if(err) done(err);
+			else {
+				movieModel.listWatchedMovies(user_f._id, function(err, results){
+					if(err) done(err);
+					else {					
+						results.should.have.length(1);
+						done();
+					}
+				});
+			}
+		});
+	});
+
+	it('List unwatched movies', function(done){
+		movieModel.addUnwatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
+			if(err) done(err);
+			else {
+				movieModel.listUnwatchedMovies(user_f._id, function(err, results){
+					if(err) done(err);
+					else {					
+						results.should.have.length(1);
+						done();
+					}
+				});
+			}
+		});
+	});
+
+	it('List tagged movies', function(done){
+		movieModel.addWatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
+			if(err) done(err);
+			else {
+				movieModel.listWatchedTagMovies(user_f._id, 'Action', function(err, results){
+					if(err) done(err);
+					else {					
+						results.should.have.length(1);
+						done();
+					}
+				});
+			}
+		});
+	});
 })

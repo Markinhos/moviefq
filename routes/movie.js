@@ -54,34 +54,42 @@ exports.deleteWatchedMovie = function(req, res) {
 }
 
 exports.unwatchedMovies = function(req, res){
-	var username = req.user.username;
-	var User = mongoose.model('User');
 	
 	this.mdb_config(function(err, config){
-		User.findOne({username: username}, function(err, user){
-			var unwatched_movies = user.profile.moviesUnwatched;
-
-			res.render('moviesList', {title: 'Watchlist', movies: unwatched_movies, unwatched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
+		movieModel.listUnwatchedMovies(req.user._id, function(err, results){
+			res.render('moviesList', {title: 'Watchlist', movies: results, unwatched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 	});
 }
 
 exports.watchedMovies = function(req, res){
-	var username = req.user.username;
-	var User = mongoose.model('User');
 
-	mdb_config(function(err, config){
-		User.findOne({username: username}, function(err, user){
-			var watched_movies = user.profile.moviesWatched;
-			console.log(watched_movies);
-				res.render('moviesList', {title: 'Movies watched', movies: watched_movies, watched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
+	this.mdb_config(function(err, config){
+		movieModel.listWatchedMovies(req.user._id, function(err, results){
+			res.render('moviesList', {title: 'Movies watched', movies: results, watched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 	});
 }
 
+exports.listWatchedTagMovies = function(req, res){
+	this.mdb_config(function(err, config){
+		movieModel.listWatchedTagMovies(req.user._id, req.params.tagName, function(err, results){
+			res.render('moviesList', {title: 'Movies tag', movies: results, watched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
+		});
+	});	
+}
+
+exports.listUnwatchedTagMovies = function(req, res){
+	this.mdb_config(function(err, config){
+		movieModel.listUnwatchedTagMovies(req.user._id, req.params.tagName, function(err, results){
+			res.render('moviesList', {title: 'Movies tag', movies: results, unwatched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
+		});
+	});	
+}
+
 exports.searchMovie = function(req, res){
 	var movieName = req.param('movieName');
-	mdb_config(function(err, config){
+	this.mdb_config(function(err, config){
 		/*mdb.searchMovie({query: movieName }, function(err, moviesRes){
 			mdb.searchTVShow({query: movieName }, function(err, tvRes){
 			  	var result = _.union(moviesRes.results, tvRes.results);
@@ -91,8 +99,9 @@ exports.searchMovie = function(req, res){
 			});
 		});*/
 		movieModel.searchMovies(movieName, function(err, result){
+			console.log("RESULTS "+ JSON.stringify(result));
 			res.render('moviesList', { title: 'Movie search', movies: result, 
-					mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
+					mdb_imgurl : config.images.base_url + config.images.poster_sizes[0], movie_search: true });
 		});
 
 	});

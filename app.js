@@ -83,6 +83,8 @@ app.get('/about', checkAuth, routes.about);
 app.get('/signup', user.singupGet);
 app.get('/login', user.loginGet);
 app.get('/logout', user.logout);
+app.get('/watched-movies/tag/:tagName', checkAuth, movie.listWatchedTagMovies);
+app.get('/unwatched-movies/tag/:tagName', checkAuth, movie.listUnwatchedTagMovies);
 app.get('/movieSearch', checkAuth, movie.searchMovie);
 app.get('/watchedMovies', checkAuth, movie.watchedMovies);
 app.get('/unwatchedMovies', checkAuth, movie.unwatchedMovies);

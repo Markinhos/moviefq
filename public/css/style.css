@@ -18,3 +18,12 @@ a {
 .movie .add-watched-control {
   margin-right: 10px;
 }
+.movie .movie-tags {
+  margin-bottom: 20px;
+}
+.movie .movie-tags > a >span {
+  margin-right: 10px;
+}
+.movie .movie-tags > a >span > i:after {
+  content: "\00a0";
+}
