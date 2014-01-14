@@ -8,6 +8,7 @@ var Movies = new mongoose.Schema({
 	rating: Number,
 	thumbnail: String,
 	moviedb_id: String,
+	created: {type: Date, default: Date.now},
 	genres: [{ id: String, name: String}],
 	idmb_id: String
 });
@@ -21,6 +22,7 @@ var Users = new mongoose.Schema({
 	profile: {
 		moviesUnwatched : [Movies],
 		moviesWatched: [Movies],
+		friends: [String],
 		profile_image_url : String
 	}
 });

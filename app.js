@@ -12,7 +12,8 @@ var express = require('express')
   , mongoose = require('mongoose')
   , MongoStore = require('connect-mongo')(express)
   , path = require('path')
-  , passport = require('passport');
+  , passport = require('passport')
+  , Facebook = require('facebook-node-sdk');;
 
 var app = express();
 
@@ -60,6 +61,7 @@ app.configure(function(){
     }
     next();
   });
+  app.use(Facebook.middleware({ appId: '562771067124686', secret: '19bb6fca7117a5b2f2723a6f5d7eed07' }));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -94,7 +96,12 @@ app.get('/auth/facebook', passport.authenticate('facebook',
 app.get('/auth/facebook/callback', passport.authenticate('facebook', 
   { callbackURL: '/auth/facebook/callback', successRedirect: '/', failureRedirect: '/login' }
 ));
-
+app.get('/facebook', Facebook.loginRequired(), function (req, res) {
+  req.facebook.api('/me', function(err, users) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Hello, ' + JSON.stringify(users, null, 2));
+  });
+});
 
 app.post('/login', auth);
 app.post('/signup', user.signupPost);

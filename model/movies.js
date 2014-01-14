@@ -95,7 +95,7 @@ MovieModel.prototype._addMovie = function(user_id, movie_id, type, callback) {
 							imdb_id: movie.imdb_id,
 							release_date: movie.release_date,
 							thumbnail: movie.poster_path,
-							moviedb_id: movie.id				
+							moviedb_id: movie.id
 						}) - 1;
 						user.save(function(err, user){
 							if (err) callback(err);

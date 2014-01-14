@@ -1,5 +1,5 @@
 .row.media.movie
-    .col-md-1
+    .col-sm-1.col-xs-12
         a.pull-left.thumbnail
             unless (movie_search)
                 img.media-object.movie-thumbnail(src="#{mdb_imgurl + movie.thumbnail}", alt="movie")
@@ -8,7 +8,7 @@
                     img.media-object.movie-thumbnail(src="#{mdb_imgurl + movie.poster_path}", alt="movie")
                 else
                     img.media-object.movie-thumbnail(src="http://d3a8mw37cqal2z.cloudfront.net/assets/e6497422f20fa74/images/no-poster-w92.jpg", alt="movie")                
-    .col-md-11.media-body
+    .col-sm-11.col-xs-12.media-body
         .row
             .col-xs-12
                 h4.media-heading #{movie.title}
@@ -32,7 +32,7 @@
                                         | #{tag.name}
         .row
             .col-xs-12
-                div.actions
+                .actions
                     unless (watched_movies)
                         form.pull-left.add-watched-control(role="form", action="/addWatchedMovie", method="POST")
                             div.form-group
