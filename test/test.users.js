@@ -1,7 +1,7 @@
 var should = require('should')
 	, helper = require('./helper')
 	, app = require('./../app.js')
-	, users = require('./../model/users')
+	, users = require('./../model/users').UserModel
 	, mongoose = require('mongoose');
 
 
@@ -15,7 +15,16 @@ describe('Users CRUD operations', function(){
 		email: 'email@test.com'
 	};
 
+	var user_data2 = {
+		username: 'paquita',
+		password: 'dummypass',
+		email: 'paquita@test.com'
+	};
+
+	var userModel = null;
+
 	beforeEach(function(done){
+		userModel = new UserModel();
 		User.remove({}, function(err){
 			if (err) done(err);
 			else done();
@@ -27,7 +36,7 @@ describe('Users CRUD operations', function(){
 	});
 
 	it('empty user list', function(done){
-		users.listUsers(function(err, users){
+		userModel.listUsers(function(err, users){
 			if(err) done(err)
 			else{
 				users.should.be.empty;
@@ -37,10 +46,10 @@ describe('Users CRUD operations', function(){
 	});
 
 	it('add one user', function(done){
-		users.addUser(user_data, function(err, user){
+		userModel.addUser(user_data, function(err, user){
 			if (err) done(err);
 			else {
-				users.listUsers(function(err, docs){
+				userModel.listUsers(function(err, docs){
 					if (err) done(err);
 					else {
 						docs.should.have.length(1);
@@ -52,61 +61,50 @@ describe('Users CRUD operations', function(){
 	});
 
 	it('add one user with wrong email', function(done){
-		users.addUser({
+		userModel.addUser({
 				user: 'paco',
 				email: 'hola',
 				password:'dummy'}
 			, function(err, user){
-			if (err){
-				done(null, 'This should fail!');
+					should.exist(err);
+					done();
 			}
-			else {
-				done('Error adding a wrong email');
-			}
-		});
+		);
 	});
 
 	it('add one user with a taken email', function(done){
-		users.addUser(user_data
+		userModel.addUser(user_data
 			, function(err, user){
 			if (err){
 				done(err);
 			}
 			else {
-				users.addUser({
+				userModel.addUser({
 					user: 'luis',
 					email: 'email@test.com',
 					password:'dummy'}
 				, function(err, user){
-					if(err){
-						done(null, 'This should fail!');
-					}
-					else{
-						done('Error adding a taken email');
-					}
+					should.exist(err);
+					done();
 				});
 			}
 		});
 	});
 
 	it('add one user with a taken user', function(done){
-		users.addUser(user_data
+		userModel.addUser(user_data
 			, function(err, user){
 			if (err){
 				done(err);
 			}
 			else {
-				users.addUser({
+				userModel.addUser({
 					user: 'paco',
 					email: 'email2@test.com',
 					password:'dummy'}
 				, function(err, user){
-					if(err){
-						done(null, 'This should fail!');
-					}
-					else{
-						done('Error adding a taken email');
-					}
+					should.exist(err);
+					done();
 				});
 			}
 		});
@@ -114,16 +112,56 @@ describe('Users CRUD operations', function(){
 
 
 	it('find by user name', function(done){
-		users.addUser(user_data, function(err, user){
-			var user_found = null;
+		userModel.addUser(user_data, function(err, user){
 			User.findOne({username : 'paco'}, function(err, user){
 				if (err) done(err);
-				else{
-					user.should.have.property('username', 'paco');
-					done(null, user);
-				}
+				user.should.have.property('username', 'paco');
+				done();
 			});
 		})
+	});
+
+	it('list following', function(done){
+		userModel.addUser(user_data, function(err, user){
+			if (err) done(err);
+			userModel.listFollowing(user._id, function(err, following){
+				if (err) done(err);
+
+				following.should.be.empty;
+				done();
+			});
+		});
+	});
+
+	it('follow one user', function(done){
+		userModel.addUser(user_data, function(err, user){
+			if (err) done(err);
+			userModel.addUser(user_data2, function(err, user2){
+				userModel.followFriend(user._id, user2._id, function(err, following){
+					following.should.have.length(1);
+					done();
+				});
+			});
+		});
+	});
+
+	it('unfollow one user', function(done){
+		userModel.addUser(user_data, function(err, user){
+			if (err) done(err);
+			userModel.addUser(user_data2, function(err, user2){
+				userModel.followFriend(user._id, user2._id, function(err, following){
+					if(err) done(err);
+
+					following.should.have.length(1);
+
+					userModel.unfollowFriend(user._id, user2._id, function(err, following){
+						if(err) done(err);
+						following.should.be.empty;
+						done();
+					});
+				});
+			});
+		});
 	});
 
 

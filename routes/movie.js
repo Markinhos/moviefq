@@ -74,7 +74,7 @@ exports.watchedMovies = function(req, res){
 exports.listWatchedTagMovies = function(req, res){
 	this.mdb_config(function(err, config){
 		movieModel.listWatchedTagMovies(req.user._id, req.params.tagName, function(err, results){
-			res.render('moviesList', {title: 'Movies tag', movies: results, watched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
+			res.render('moviesList', {title: 'Movies tag', tag: req.params.tagName, movies: results, watched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 	});	
 }
@@ -82,7 +82,7 @@ exports.listWatchedTagMovies = function(req, res){
 exports.listUnwatchedTagMovies = function(req, res){
 	this.mdb_config(function(err, config){
 		movieModel.listUnwatchedTagMovies(req.user._id, req.params.tagName, function(err, results){
-			res.render('moviesList', {title: 'Movies tag', movies: results, unwatched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
+			res.render('moviesList', {title: 'Movies tag', tag: req.params.tagName, movies: results, unwatched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 	});	
 }

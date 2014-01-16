@@ -1,9 +1,11 @@
 var mongoose = require('mongoose')
-    , users = require('./../model/users')
+    , UserModel = require('./../model/users').UserModel
     , passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy
     , FacebookStrategy = require('passport-facebook').Strategy;
 
+
+userModel = new UserModel();
 
 module.exports = function(hostname, port) {
   return new PassportConfig(hostname, port);
@@ -28,12 +30,14 @@ function PassportConfig(hostname, port){
 
   passport.use(new LocalStrategy(
     function(username, password, done) {
-      users.findOne({ user: username }, function (err, user) {
-        if (err) { return done(err); }
+      User.findOne({ username: username }, function (err, user) {
+        if (err) { console.log("Error " + err); return done(err); }
         if (!user) {
+          console.log("Incorrect username");
           return done(null, false, { message: 'Incorrect username.' });
         }
         if (!user.validPassword(password)) {
+          console.log("Incorrect password");
           return done(null, false, { message: 'Incorrect password.' });
         }
         return done(null, user);
@@ -60,6 +64,7 @@ function PassportConfig(hostname, port){
               profile : {
                 moviesUnwatched : [],
                 moviesWatched : [],
+                following : [],
                 profile_image_url: 'http://graph.facebook.com/' + profile.id + '/picture?type=square'
               }
             }, function(err, user){

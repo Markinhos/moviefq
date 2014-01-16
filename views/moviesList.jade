@@ -3,7 +3,11 @@ extends loggedLayout
 block content
     .row
         .col-xs-12
-            h1= title
+            h1           
+                if (tag)                
+                    span.label.label-info.tag-title.tag
+                            i.fa.fa-tag 
+                            | #{tag}
             form(role="form", action="/movieSearch", method="GET")
                 div.form-group
                     label(for="searchBox") What are you watching?

@@ -73,6 +73,7 @@ var auth = passport.authenticate('local', {successRedirect: '/', failureRedirect
 
 function checkAuth(req, res, next) {
   if (!req.isAuthenticated()) {
+    console.log("User not authenticated");
     res.redirect('/login');
   } else {
     next();
@@ -85,6 +86,8 @@ app.get('/about', checkAuth, routes.about);
 app.get('/signup', user.singupGet);
 app.get('/login', user.loginGet);
 app.get('/logout', user.logout);
+app.get('/friends', checkAuth, user.friends);
+app.get('/follow_friends', checkAuth, user.add_friends);
 app.get('/watched-movies/tag/:tagName', checkAuth, movie.listWatchedTagMovies);
 app.get('/unwatched-movies/tag/:tagName', checkAuth, movie.listUnwatchedTagMovies);
 app.get('/movieSearch', checkAuth, movie.searchMovie);
@@ -105,6 +108,8 @@ app.get('/facebook', Facebook.loginRequired(), function (req, res) {
 
 app.post('/login', auth);
 app.post('/signup', user.signupPost);
+app.post('/followUser', checkAuth, user.followUser);
+app.post('/unfollowUser', checkAuth, user.unfollowUser);
 app.post('/addWatchedMovie', checkAuth, movie.addWatchedMovie);
 app.post('/addUnwatchedMovie', checkAuth, movie.addUnwatchedMovie);
 app.post('/deleteWatchedMovie', checkAuth, movie.deleteWatchedMovie);

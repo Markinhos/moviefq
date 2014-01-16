@@ -1,35 +1,11 @@
 
-var mongoose = require('mongoose')
-	 ,users = require('./../model/users');
+var UserModel = require('./../model/users').UserModel;
 
 
-User = mongoose.model('User')
+userModel = new UserModel();
+
 exports.loginGet = function(req, res){
 	res.render('login', {});
-};
-
-exports.loginPost = function(req, res){
-	var username = req.body.username;
-	var password = req.body.password;
-
-	User.findOne({ username: username }, function (err, user) {
-	  if (err) { return done(err); }
-	  if (!user) {
-		res.redirect('/login');
-	  }
-	  else{
-		var isValid = null;
-		user.validPassword(password, function(err, isValid){
-			if (!isValid){
-				res.redirect('/login');
-			}
-			else{
-			  req.session.user_id = user._id;
-			  res.redirect('/');
-			}
-		});	
-	  }
-	});
 };
 
 exports.logout = function(req, res){
@@ -42,13 +18,13 @@ exports.singupGet = function(req, res){
 };
 
 exports.signupPost = function(req, res){
-	User.findOne({username : req.body.username}, function(err, user){
+	userModel.User.findOne({username : req.body.username}, function(err, user){
 		if (err) console.log(err);
 		else {
 		  if(user) res.redirect('/signup');
 		  else {
-			User.findOne({email: req.body.email}, function(err, user){
-				users.addUser({
+			userModel.User.findOne({email: req.body.email}, function(err, user){
+				userModel.addUser({
 						username: req.body.username,
 						email: req.body.email,
 						password: req.body.password
@@ -65,4 +41,28 @@ exports.signupPost = function(req, res){
 		  }
 		}
   });
+};
+
+exports.followUser = function(req, res){
+	userModel.followFriend(req.user._id, req.param('follow_id'), function(err, following){
+		res.redirect("/friends");
+	});
+};
+
+exports.unfollowUser = function(req, res){
+	userModel.unfollowFriend(req.user._id, req.param('unfollow_id'), function(err, following){
+		res.redirect("/friends");
+	});
+};
+
+exports.friends = function(req, res){
+	userModel.listFollowing(req.user._id, function(err, following){
+		res.render('following', {title: 'Following', users: following, isFollowingView: true });
+	});
+};
+
+exports.add_friends = function(req, res){
+	userModel.listUsers(function(err, following){
+		res.render('following', {title: 'Follow friends', users: following, isAddFriendsView: true });
+	});
 };

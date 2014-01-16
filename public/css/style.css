@@ -21,9 +21,9 @@ a {
 .movie .movie-tags {
   margin-bottom: 20px;
 }
-.movie .movie-tags > a >span {
+.tag {
   margin-right: 10px;
 }
-.movie .movie-tags > a >span > i:after {
+.tag > i:after {
   content: "\00a0";
 }

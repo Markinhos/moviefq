@@ -22,12 +22,12 @@
                         each tag in movie.genres
                             if (watched_movies)
                                 a(href='/watched-movies/tag/#{tag.name}')
-                                    span.label.label-info
+                                    span.label.label-info.tag
                                         i.fa.fa-tag 
                                         | #{tag.name}
                             if (unwatched_movies)
                                 a(href='/unwatched-movies/tag/#{tag.name}')
-                                    span.label.label-info
+                                    span.label.label-info.tag
                                         i.fa.fa-tag 
                                         | #{tag.name}
         .row
