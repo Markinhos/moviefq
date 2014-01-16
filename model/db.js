@@ -22,7 +22,7 @@ var Users = new mongoose.Schema({
 	profile: {
 		moviesUnwatched : [Movies],
 		moviesWatched: [Movies],
-		friends: [String],
+		following: [String],
 		profile_image_url : String
 	}
 });

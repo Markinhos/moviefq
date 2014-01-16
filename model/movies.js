@@ -85,7 +85,7 @@ MovieModel.prototype._addMovie = function(user_id, movie_id, type, callback) {
 			var movie = _.find(user.profile[type], {moviedb_id : movie_id});
 			if (!movie) {
 				self.movieProvider.movieInfo({ id : movie_id}, function(err, movie) {
-					console.log("MOVIE INFO " + JSON.stringify(movie, null, 2));
+					//console.log("MOVIE INFO " + JSON.stringify(movie, null, 2));
 					if (err) callback(err);
 					else{
 						var newIndex = user.profile[type].push({

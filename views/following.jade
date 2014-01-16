@@ -1,0 +1,30 @@
+extends loggedLayout
+
+block content
+    .row
+        .col-xs-12
+            h1= title
+            p Your friends
+            each user in users
+                .row
+                    .col-sm-1
+                        a.pull-left.thumbnail
+                            img.media-object.profile-thumbnail(src="")
+                    .col-sm-10
+                        .row                            
+                            p.friend-name #{user.username}
+                    if(isAddFriendsView)
+                        .col-sm-1
+                            form(role="form", action="/followUser", method="POST")
+                                .form-group
+                                    input.form-control(type="hidden", value="#{user._id}", name="follow_id")
+                                    button.btn.btn-primary.btn-sm(type="submit") Follow!
+                    if(isFollowingView)
+                        .col-sm-1
+                            form(role="form", action="/unfollowUser", method="POST")
+                                .form-group
+                                    input.form-control(type="hidden", value="#{user._id}", name="unfollow_id")
+                                    button.btn.btn-primary.btn-sm(type="submit") Unfollow      
+            if(isFollowingView)
+                a.btn.btn-primary.btn-lg(href="/follow_friends", role="button") Add friends                           
+
