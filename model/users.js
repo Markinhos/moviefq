@@ -28,23 +28,7 @@ UserModel.prototype.addUser = function(data, callback){
 };
 
 UserModel.prototype.listUsers = function(callback){	
-	User.find(function(err, users){
-		if (err) callback(error);
-		else {
-			if (users === null) callback(null, []);
-			else {
-
-				var m_users = [];
-				async.each(users, function(user, eachCallback){
-					m_users.push({ username : user.username, _id: user._id }) ;
-					eachCallback();
-				}, function(err){
-					console.log("M_USERS " + JSON.stringify(m_users, null, 2));
-					callback(null, m_users);					
-				});
-			}
-		}
-	});
+	User.find({}, 'username _id').exec(callback);
 };
 
 UserModel.prototype.findUserByName = function(name, callback){
@@ -53,15 +37,15 @@ UserModel.prototype.findUserByName = function(name, callback){
 
 UserModel.prototype.followFriend = function(user_id, friend_id, callback){
 	User.findById(user_id, function(err, user){
-		user.profile.following.push
 
 		var newIndex = user.profile.following.push(friend_id) - 1;
 
 		user.save(function(err, user){
-			if (err) callback(err);
-			else {
-				callback(null, user.profile.following);
+			if (err) {
+				console.log("Error " + err);
+				callback(err);
 			}
+			callback(null, user.profile.following);
 		});	
 	});
 };
@@ -74,35 +58,44 @@ UserModel.prototype.unfollowFriend = function(user_id, friend_id, callback){
 
 		user.save(function(err, user){
 			if (err) callback(err);
-			else {
-				callback(null, user.profile.following);
-			}
+			
+			callback(null, user.profile.following);
 		});	
 	});
 };
 
 UserModel.prototype.listFollowing = function(user_id, callback){
-	User.findById(user_id, function(err, user){
+	User.findById(user_id).populate('profile.following', 'username _id').exec(function(err, user){
 		if (err) callback(err);
+		callback(null, user.profile.following);
+	});
+};
 
-		var f_users = [];
-		async.each(user.profile.following, 
-			function(following_id, eachCallback){
-				User.findById(following_id, function(err, user){
-					if(!err && user){
-						console.log("F ID " + user);
-						f_users.push({ username : user.username, _id: user._id }) ;
-					}
-					eachCallback();		
-				});
-			},
-			function(err){
+UserModel.prototype.listAddFriends = function(user_id, callback){
+	var self = this;
+	User.findById(user_id, function(err, user){
+		if(err) callback(err);
 
-				console.log("F_USERS " + JSON.stringify(f_users, null, 2));
+		self.listUsers(function(err, followList){
+			if(err) callback(err);
+			async.filter (followList, 
+				function (follow_user, asyncCallback){				
+					asyncCallback(
+						//If user is not himself
+						!(user_id.equals(follow_user._id) 
+							//And is not already following him
+						|| user.profile.following.some(function(user_d){
+								return user_d.equals(follow_user._id)
+							}
+						))
+					);
+				},
+				function(results){
+					callback(null, results);
+				}
+			);
 
-				callback(null, f_users);
-			}
-		);
+		});
 	});
 };
 

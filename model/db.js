@@ -1,6 +1,8 @@
 var mongoose = require('mongoose')
 	,cryptoHelper = require('./../modules/crypto-helper');
 
+var Schema = mongoose.Schema;
+
 var Movies = new mongoose.Schema({
 	title: String,
 	overview: String,
@@ -22,7 +24,7 @@ var Users = new mongoose.Schema({
 	profile: {
 		moviesUnwatched : [Movies],
 		moviesWatched: [Movies],
-		following: [String],
+		following: [{type: Schema.ObjectId, ref: Users}],
 		profile_image_url : String
 	}
 });

@@ -62,7 +62,7 @@ exports.friends = function(req, res){
 };
 
 exports.add_friends = function(req, res){
-	userModel.listUsers(function(err, following){
+	userModel.listAddFriends(req.user._id, function(err, following){
 		res.render('following', {title: 'Follow friends', users: following, isAddFriendsView: true });
 	});
 };
