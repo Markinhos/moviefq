@@ -1,5 +1,6 @@
 var mongoose = require('mongoose')
-  	, _ = require('lodash');
+  	, _ = require('lodash')
+  	, async = require('async');
 
 Movie = mongoose.model('Movie');
 User = mongoose.model('User');
@@ -58,12 +59,20 @@ MovieModel.prototype.listUnwatchedTagMovies = function(user_id, tagName, callbac
 MovieModel.prototype._listTags = function(user_id, tagName, type, callback){
 	this._listMovies(user_id, type, function(err, movies){
 		if(err) callback(err);
-		var taggedMovies = _.filter(movies, function(movie){
-			return _.find(movie.genres, function(genre){
-				return (genre.name === tagName);
-			});
-		});
-		callback(null, taggedMovies);
+
+		async.filter(
+			movies, 
+			function (movie, asyncCallback){
+				asyncCallback(
+					_.find(movie.genres, function(genre){
+						return (genre.name === tagName);
+					})
+				);
+			}, 
+			function(taggedMovies){
+				callback(null, taggedMovies);
+			}
+		);
 	});
 };
 
