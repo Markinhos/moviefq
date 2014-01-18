@@ -201,4 +201,25 @@ describe('Movies', function(){
 			}
 		});
 	});
+
+	it('get movies list from user', function(done){
+		movieModel.addWatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
+			if(err) done(err);
+			else {
+				movieModel.addUnwatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
+					if(err) done(err);
+					else {
+						movieModel.getMoviesUser(user_f._id, function(err, results){
+							if(err) done(err);
+							else {					
+								results.should.have.property('moviesWatched').with.length(1);
+								results.should.have.property('moviesUnwatched').with.length(1);
+								done();
+							}
+						});
+					}
+				});
+			}
+		});
+	});
 })

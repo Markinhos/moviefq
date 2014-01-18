@@ -24,12 +24,10 @@ var Users = new mongoose.Schema({
 	profile: {
 		moviesUnwatched : [Movies],
 		moviesWatched: [Movies],
-		events: [
-			{
-				event_type: {type: String, enum: ['follow'],
-				user_who_follows: { type: Schema.ObjectId, ref: Users}
-			}
-		]
+		events: [{
+			event_type: {type: String, enum: ['follow'] },
+			user_who_follows: { type: Schema.ObjectId, ref: Users }
+		}],
 		following: [{
 			user_following: {type: Schema.ObjectId, ref: Users}	,
 			follow_since: {type: Date, default: Date.now}

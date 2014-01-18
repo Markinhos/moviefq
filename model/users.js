@@ -53,17 +53,13 @@ UserModel.prototype.followFriend = function(user_id, friend_id, callback){
 UserModel.prototype.unfollowFriend = function(user_id, friend_id, callback){
 	User.findById(user_id, function(err, user){
 
-		console.log("UOOO: " + JSON.stringify(user.profile.following));
 		var friend = _.find(user.profile.following, function(f_user){
 			return f_user.user_following.equals(mongoose.Types.ObjectId(friend_id.toString()));
 		});
-		console.log("FRIEND ID "+ friend_id);
-		console.log("FRIEND "+ friend);
 		var newIndex = user.profile.following.pull(friend) - 1;	
 
 		user.save(function(err, user){
 			if (err) callback(err);
-			console.log("WEEE: " + JSON.stringify(user.profile.following));
 			callback(null, user.profile.following);
 		});
 	});

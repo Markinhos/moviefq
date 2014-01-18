@@ -56,6 +56,24 @@ MovieModel.prototype.listUnwatchedTagMovies = function(user_id, tagName, callbac
 	this._listTags(user_id, tagName, 'moviesUnwatched', callback);
 };
 
+MovieModel.prototype.getMoviesUser = function(user_id, callback){
+	var self = this;
+	var movies = {moviesWatched: [], moviesUnwatched: []};
+
+	this.listWatchedMovies(user_id, function(err, watchedMovies){
+		if (err) callback(err);
+		movies.moviesWatched = watchedMovies;
+		self.listUnwatchedMovies(user_id, function(err, unwatchedMovies){
+			if(err) callback(err);
+			movies.moviesUnwatched = unwatchedMovies;
+			User.findById(user_id, function(err, user){
+				movies.username = user.username;				
+				callback(null, movies);
+			});
+		});
+	});
+};
+
 MovieModel.prototype._listTags = function(user_id, tagName, type, callback){
 	this._listMovies(user_id, type, function(err, movies){
 		if(err) callback(err);
