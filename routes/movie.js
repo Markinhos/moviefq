@@ -27,6 +27,7 @@ var Movie = mongoose.model('Movie');
 exports.addWatchedMovie = function(req, res){	
 	var movie_id = req.param('id');
 	movieModel.addWatchedMovie(req.user._id, movie_id, function(){
+		if(err) console.log("Error " + err);
 		res.redirect('/watchedMovies');
 	});
 };
@@ -57,6 +58,7 @@ exports.unwatchedMovies = function(req, res){
 	
 	this.mdb_config(function(err, config){
 		movieModel.listUnwatchedMovies(req.user._id, function(err, results){
+			if(err) console.log("Error " + err);
 			res.render('moviesList', {title: 'Watchlist', movies: results, unwatched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 	});
@@ -66,6 +68,7 @@ exports.watchedMovies = function(req, res){
 
 	this.mdb_config(function(err, config){
 		movieModel.listWatchedMovies(req.user._id, function(err, results){
+			if(err) console.log("Error " + err);
 			res.render('moviesList', {title: 'Movies watched', movies: results, watched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 	});
@@ -74,6 +77,7 @@ exports.watchedMovies = function(req, res){
 exports.listWatchedTagMovies = function(req, res){
 	this.mdb_config(function(err, config){
 		movieModel.listWatchedTagMovies(req.user._id, req.params.tagName, function(err, results){
+			if(err) console.log("Error " + err);
 			res.render('moviesList', {title: 'Movies tag', tag: req.params.tagName, movies: results, watched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 	});	
@@ -82,6 +86,7 @@ exports.listWatchedTagMovies = function(req, res){
 exports.listUnwatchedTagMovies = function(req, res){
 	this.mdb_config(function(err, config){
 		movieModel.listUnwatchedTagMovies(req.user._id, req.params.tagName, function(err, results){
+			if(err) console.log("Error " + err);
 			res.render('moviesList', {title: 'Movies tag', tag: req.params.tagName, movies: results, unwatched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 	});	
@@ -90,6 +95,7 @@ exports.listUnwatchedTagMovies = function(req, res){
 exports.getMoviesUser = function(req, res){
 	this.mdb_config(function(err, config){
 		movieModel.getMoviesUser(req.params.userId, function(err, results){
+			if(err) console.log("Error " + err);
 			res.render('moviesListUser', {title: 'Movies from user', movies: results, unwatched_movies: true, mdb_imgurl : config.images.base_url + config.images.poster_sizes[0] });
 		});
 	});	
