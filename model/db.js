@@ -12,7 +12,9 @@ var Movies = new mongoose.Schema({
 	moviedb_id: String,
 	created: {type: Date, default: Date.now},
 	genres: [{ id: String, name: String}],
-	idmb_id: String
+	idmb_id: String,
+	user_rating: Number,
+	hidden: Boolean
 });
 
 var Users = new mongoose.Schema({

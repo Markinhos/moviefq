@@ -62,10 +62,10 @@ MovieModel.prototype.getMoviesUser = function(user_id, callback){
 
 	this.listWatchedMovies(user_id, function(err, watchedMovies){
 		if (err) callback(err);
-		movies.moviesWatched = watchedMovies;
+		movies.moviesWatched = _.sortBy(watchedMovies, function(elem) { return -1 * elem.created } );
 		self.listUnwatchedMovies(user_id, function(err, unwatchedMovies){
 			if(err) callback(err);
-			movies.moviesUnwatched = unwatchedMovies;
+			movies.moviesUnwatched = _.sortBy(unwatchedMovies, function(elem) { return -1 * elem.created });
 			User.findById(user_id, function(err, user){
 				movies.username = user.username;				
 				callback(null, movies);
