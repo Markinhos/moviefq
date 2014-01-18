@@ -38,7 +38,7 @@ UserModel.prototype.findUserByName = function(name, callback){
 UserModel.prototype.followFriend = function(user_id, friend_id, callback){
 	User.findById(user_id, function(err, user){
 
-		var newIndex = user.profile.following.push(friend_id) - 1;
+		var newIndex = user.profile.following.push({user_following : friend_id}) - 1;
 
 		user.save(function(err, user){
 			if (err) {
@@ -52,20 +52,25 @@ UserModel.prototype.followFriend = function(user_id, friend_id, callback){
 
 UserModel.prototype.unfollowFriend = function(user_id, friend_id, callback){
 	User.findById(user_id, function(err, user){
-		user.profile.following.push
 
-		var newIndex = user.profile.following.pull(friend_id) - 1;
+		console.log("UOOO: " + JSON.stringify(user.profile.following));
+		var friend = _.find(user.profile.following, function(f_user){
+			return f_user.user_following.equals(mongoose.Types.ObjectId(friend_id.toString()));
+		});
+		console.log("FRIEND ID "+ friend_id);
+		console.log("FRIEND "+ friend);
+		var newIndex = user.profile.following.pull(friend) - 1;	
 
 		user.save(function(err, user){
 			if (err) callback(err);
-			
+			console.log("WEEE: " + JSON.stringify(user.profile.following));
 			callback(null, user.profile.following);
-		});	
+		});
 	});
 };
 
 UserModel.prototype.listFollowing = function(user_id, callback){
-	User.findById(user_id).populate('profile.following', 'username _id').exec(function(err, user){
+	User.findById(user_id).populate('profile.following.user_following', 'username _id').exec(function(err, user){
 		if (err) callback(err);
 		callback(null, user.profile.following);
 	});
@@ -78,6 +83,7 @@ UserModel.prototype.listAddFriends = function(user_id, callback){
 
 		self.listUsers(function(err, followList){
 			if(err) callback(err);
+
 			async.filter (followList, 
 				function (follow_user, asyncCallback){				
 					asyncCallback(
@@ -85,7 +91,7 @@ UserModel.prototype.listAddFriends = function(user_id, callback){
 						!(user_id.equals(follow_user._id) 
 							//And is not already following him
 						|| user.profile.following.some(function(user_d){
-								return user_d.equals(follow_user._id)
+								return user_d.user_following.equals(follow_user._id)
 							}
 						))
 					);

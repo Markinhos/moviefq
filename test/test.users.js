@@ -139,7 +139,7 @@ describe('Users CRUD operations', function(){
 			userModel.addUser(user_data2, function(err, user2){
 				userModel.followFriend(user._id, user2._id, function(err, following){
 					following.should.have.length(1);
-					following[0].should.eql(user2._id);
+					following[0].user_following.should.eql(user2._id);
 					done();
 				});
 			});
@@ -153,7 +153,7 @@ describe('Users CRUD operations', function(){
 				userModel.followFriend(user._id, user2._id, function(err, following){					
 					userModel.listFollowing(user._id, function(err, following_friends){
 						following_friends.should.have.length(1);
-						following_friends[0].should.have.property('username', 'paquita');
+						following_friends[0].user_following.should.have.property('username', 'paquita');
 						done();
 					});
 				});

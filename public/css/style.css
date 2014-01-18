@@ -30,6 +30,7 @@ a {
 .follow-user {
   width: 263px;
   float: left;
+  margin-right: 15px;
 }
 .follow-user .avatar {
   float: left;
