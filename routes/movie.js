@@ -26,7 +26,7 @@ var Movie = mongoose.model('Movie');
 
 exports.addWatchedMovie = function(req, res){	
 	var movie_id = req.param('id');
-	movieModel.addWatchedMovie(req.user._id, movie_id, function(){
+	movieModel.addWatchedMovie(req.user._id, movie_id, function(err){
 		if(err) console.log("Error " + err);
 		res.redirect('/watchedMovies');
 	});
