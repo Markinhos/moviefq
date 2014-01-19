@@ -26,6 +26,7 @@ exports.signupPost = function(req, res){
 			userModel.User.findOne({email: req.body.email}, function(err, user){
 				userModel.addUser({
 						username: req.body.username,
+						name: req.body.username,
 						email: req.body.email,
 						password: req.body.password
 					}, function(err, user){
