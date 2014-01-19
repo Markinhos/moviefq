@@ -14,7 +14,7 @@ var Movies = new mongoose.Schema({
 	genres: [{ id: String, name: String}],
 	idmb_id: String,
 	user_rating: Number,
-	hidden: Boolean
+	hidden: { type: Boolean, default: false }
 });
 
 var Users = new mongoose.Schema({
@@ -32,7 +32,7 @@ var Users = new mongoose.Schema({
 			user_who_follows: { type: Schema.ObjectId, ref: Users }
 		}],
 		following: [{
-			user_following: {type: Schema.ObjectId, ref: Users}	,
+			user_following: {type: Schema.ObjectId, ref: Users},
 			follow_since: {type: Date, default: Date.now}
 		}],
 		followers: [{
