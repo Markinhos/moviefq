@@ -59,6 +59,7 @@ function PassportConfig(hostname, port){
           else {
             User.create({
               username : profile.username,
+              name: profile.name,
               email: profile.emails[0].value,
               fbId: profile.id,
               profile : {
