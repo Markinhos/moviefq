@@ -124,6 +124,7 @@ UserModel.prototype.feed = function(user_id, callback){
 							movie: movie_f.title,
 							movie_id: movie_f._id,
 							type: 'movieUnwatched',
+							thumbnail: movie_f.thumbnail,
 							created: movie_f.created
 						});	
 					}
@@ -136,11 +137,12 @@ UserModel.prototype.feed = function(user_id, callback){
 							movie: movie_f.title,
 							movie_id: movie_f._id,
 							type: 'movieWatched',
+							thumbnail: movie_f.thumbnail,
 							created: movie_f.created
 						});	
 					}
 				);
-				
+
 				asyncCallback();
 			}
 			,
