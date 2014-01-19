@@ -116,39 +116,32 @@ UserModel.prototype.feed = function(user_id, callback){
 		async.each(
 			user.profile.following, 
 			function(follow, asyncCallback){
-				async.each(follow.user_following.profile.moviesUnwatched,
-					function(movie_f, asyncCallback2){						
+
+				_.forEach(follow.user_following.profile.moviesUnwatched
+					, function(movie_f){
 						results.push({
 							username: follow.user_following.username,
 							movie: movie_f.title,
 							movie_id: movie_f._id,
 							type: 'movieUnwatched',
 							created: movie_f.created
-						});						
-					},
-
-					function(err){
-						if (err) asyncCallback(err)
-						asyncCallback();
+						});	
 					}
 				);
-				async.each(follow.user_following.profile.moviesWatched,
-					function(movie_f, asyncCallback3){						
+
+				_.forEach(follow.user_following.profile.moviesWatched
+					, function(movie_f){
 						results.push({
 							username: follow.user_following.username,
 							movie: movie_f.title,
 							movie_id: movie_f._id,
 							type: 'movieWatched',
 							created: movie_f.created
-						});
-						asyncCallback3();
-					},
-
-					function(err){
-						if (err) asyncCallback2(err)
-						asyncCallback();
+						});	
 					}
 				);
+				
+				asyncCallback();
 			}
 			,
 			function(err){
