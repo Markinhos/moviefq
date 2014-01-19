@@ -81,7 +81,7 @@ function checkAuth(req, res, next) {
 }
 
 
-app.get('/', checkAuth, routes.index);
+app.get('/', checkAuth, user.feed);
 app.get('/about', checkAuth, routes.about);
 app.get('/signup', user.singupGet);
 app.get('/login', user.loginGet);

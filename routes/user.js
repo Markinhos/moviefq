@@ -61,6 +61,12 @@ exports.friends = function(req, res){
 	});
 };
 
+exports.feed = function(req, res){
+	userModel.feed(req.user._id, function(err, results){
+		res.render('index', {title: 'Home', movies:  results});
+	});
+};
+
 exports.add_friends = function(req, res){
 	userModel.listAddFriends(req.user._id, function(err, following){
 		res.render('following', {title: 'Follow friends', users: following, isAddFriendsView: true });

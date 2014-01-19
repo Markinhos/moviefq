@@ -1,7 +1,7 @@
 var should = require('should')
 	, helper = require('./helper')
 	, app = require('./../app.js')
-	, users = require('./../model/users').UserModel
+	, UserModel = require('./../model/users').UserModel
 	, mongoose = require('mongoose');
 
 

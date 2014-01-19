@@ -101,6 +101,70 @@ UserModel.prototype.listAddFriends = function(user_id, callback){
 	});
 };
 
+
+UserModel.prototype.feed = function(user_id, callback){
+
+	User.findById(user_id).populate(
+		'profile.following.user_following', 
+		'username _id profile.moviesUnwatched profile.moviesWatched'
+		).exec(function(err, user){
+		
+		if (err) callback(err);
+
+		var results = [];
+
+		async.each(
+			user.profile.following, 
+			function(follow, asyncCallback){
+				async.each(follow.user_following.profile.moviesUnwatched,
+					function(movie_f, asyncCallback2){						
+						results.push({
+							username: follow.user_following.username,
+							movie: movie_f.title,
+							movie_id: movie_f._id,
+							type: 'movieUnwatched',
+							created: movie_f.created
+						});						
+					},
+
+					function(err){
+						if (err) asyncCallback(err)
+						asyncCallback();
+					}
+				);
+				async.each(follow.user_following.profile.moviesWatched,
+					function(movie_f, asyncCallback3){						
+						results.push({
+							username: follow.user_following.username,
+							movie: movie_f.title,
+							movie_id: movie_f._id,
+							type: 'movieWatched',
+							created: movie_f.created
+						});
+						asyncCallback3();
+					},
+
+					function(err){
+						if (err) asyncCallback2(err)
+						asyncCallback();
+					}
+				);
+			}
+			,
+			function(err){
+				if(err) callback(err);
+
+				var resultsSorted = _.sortBy(results, function(res){
+					return -1 * res.created;
+				});
+				console.log("FOOLLOWING " + JSON.stringify(resultsSorted, null, 2));
+				callback(null, resultsSorted);
+			}
+		);
+		
+	});
+}
+
 UserModel.prototype.listFBfriends = function(user_id, callback){
 
 };

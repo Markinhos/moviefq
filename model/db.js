@@ -19,6 +19,7 @@ var Movies = new mongoose.Schema({
 
 var Users = new mongoose.Schema({
 	username: {type: String, required: true},
+	name: { type: String },
 	email: {type: String, lowercase: true},
 	fbId: String,
 	password: String,
@@ -33,6 +34,10 @@ var Users = new mongoose.Schema({
 		following: [{
 			user_following: {type: Schema.ObjectId, ref: Users}	,
 			follow_since: {type: Date, default: Date.now}
+		}],
+		followers: [{
+			user_id : {type: Schema.ObjectId, ref: Users},
+			blocked: {type: Boolean}
 		}],
 		profile_image_url : String
 	}
