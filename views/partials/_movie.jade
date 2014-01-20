@@ -1,6 +1,6 @@
 .row.media.movie
     .col-sm-1.col-xs-12
-        a.pull-left.thumbnail
+        a.pull-left.thumbnail(data-toggle="modal", data-target="#movieModal-#{movie.id}", href="/movie/#{movie.moviedb_id}")        
             unless (movie_search)
                 img.media-object.movie-thumbnail(src="#{mdb_imgurl + movie.thumbnail}", alt="movie")
             else
@@ -51,5 +51,7 @@
                         form.add-watched-control(role="form", action="/deleteWatchedMovie", method="POST")
                             div.form-group
                                 input#deleteWatchedMovie.form-control(type="hidden", value="#{movie.id}", name="id")
-                                button.btn.btn-danger.btn-sm(type="submit") Delete
+                                button.btn.btn-danger.btn-sm(type="submit") Delete                                
 hr
+
+div.modal.fade(id="movieModal-#{movie.id}", tabIndex="-1", role="dialog", aria-labelledby="myLabel", aria-hidden="true")
