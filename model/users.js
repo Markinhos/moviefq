@@ -152,7 +152,6 @@ UserModel.prototype.feed = function(user_id, callback){
 				var resultsSorted = _.sortBy(results, function(res){
 					return -1 * res.created;
 				});
-				console.log("FOOLLOWING " + JSON.stringify(resultsSorted, null, 2));
 				callback(null, resultsSorted);
 			}
 		);

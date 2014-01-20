@@ -12,8 +12,9 @@ var express = require('express')
   , mongoose = require('mongoose')
   , MongoStore = require('connect-mongo')(express)
   , path = require('path')
+  , mdbconfig = require('./modules/moviedbConfiguration')
   , passport = require('passport')
-  , Facebook = require('facebook-node-sdk');;
+  , Facebook = require('facebook-node-sdk');
 
 var app = express();
 
@@ -58,8 +59,15 @@ app.configure(function(){
     if(req.isAuthenticated()){
       res.locals.username = req.user.username;
       res.locals.user_thumbnail = req.user.profile.profile_image_url;
+      
+      mdbconfig.movieDBconfiguration(function(err, config){
+        res.locals.mdb_imgurl = config.images.base_url + config.images.poster_sizes[0];
+        next();
+      })
     }
-    next();
+    else{
+      next();
+    }
   });
   app.use(Facebook.middleware({ appId: '562771067124686', secret: '19bb6fca7117a5b2f2723a6f5d7eed07' }));
   app.use(app.router);

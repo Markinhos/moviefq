@@ -9,7 +9,6 @@ exports.movieDBconfiguration = function(callback){
 			if (err) throw err;
 			else{
 				mdbConfiguration = configuration;
-				console.log('Configuration MDB' + configuration);
 				callback(null, mdbConfiguration);	
 			}
 		});
@@ -23,7 +22,7 @@ configureMovieDB = function(callback){
 	mdb.configuration(function(err, configuration){
 		if(err) callback(err);
 
-	  	console.log("other config " + JSON.stringify(configuration));
+	  	console.log("other config " + JSON.stringify(configuration, null, 2));
 		callback(null, configuration);
 	});
 }
