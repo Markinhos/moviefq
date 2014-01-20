@@ -15,6 +15,12 @@ a {
 #navigation .user-control {
   margin-right: 15px;
 }
+#feed .media {
+  padding: 8px;
+}
+#feed .media .media-object {
+  width: 32px;
+}
 .movie .add-watched-control {
   margin-right: 10px;
 }

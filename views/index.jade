@@ -6,14 +6,23 @@ block content
         div.form-group
             label(for="searchBox") What are you watching?
             input#searchBox.form-control(type="text", name="movieName", placeholder="Type a movie or tv show")
-    each movie in movies
-        .well
-            if (movie.type == 'movieWatched')
-                p 
-                    strong #{movie.username} 
-                    | has watched #{movie.movie}
-            if (movie.type == 'movieUnwatched')
-                p
-                    strong #{movie.username} 
-                    | wants to watch #{movie.movie}
+    #feed
+        each movie in movies
+            .media.well
+                a.pull-left.thumbnail(href="#")
+                    img.media-object(src="#{mdb_imgurl + movie.thumbnail}", alt="{movie.movie}")
+                .media-body
+
+                    if (movie.type == 'movieWatched')
+                        p
+                            a(href="/user/#{movie.user_id}")
+                                strong #{movie.username} 
+                            | has watched #{movie.movie}
+                        p #{movie.time_ago}
+                    if (movie.type == 'movieUnwatched')
+                        p
+                            a(href="/user/#{movie.user_id}")
+                                strong #{movie.username} 
+                            | wants to watch #{movie.movie}
+                        p #{movie.time_ago}
 

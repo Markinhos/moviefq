@@ -1,7 +1,8 @@
 var cryptoHelper = require('./../modules/crypto-helper')
 	, mongoose = require('mongoose')
 	, _ = require('lodash')
-	, async = require('async');
+	, async = require('async')
+	, moment = require('moment');
 
 User = mongoose.model('User');
 
@@ -120,11 +121,14 @@ UserModel.prototype.feed = function(user_id, callback){
 				_.forEach(follow.user_following.profile.moviesUnwatched
 					, function(movie_f){
 						results.push({
-							username: follow.user_following.username,
+							username: follow.user_following.username,							
+							user_id: follow.user_following._id,
 							movie: movie_f.title,
 							movie_id: movie_f._id,
 							type: 'movieUnwatched',
+							moviedb_id : movie_f.moviedb_id,
 							thumbnail: movie_f.thumbnail,
+							time_ago: moment(movie_f).fromNow(),
 							created: movie_f.created
 						});	
 					}
@@ -133,11 +137,14 @@ UserModel.prototype.feed = function(user_id, callback){
 				_.forEach(follow.user_following.profile.moviesWatched
 					, function(movie_f){
 						results.push({
-							username: follow.user_following.username,
+							username: follow.user_following.username,							
+							user_id: follow.user_following._id,
 							movie: movie_f.title,
 							movie_id: movie_f._id,
+							moviedb_id : movie_f.moviedb_id,
 							type: 'movieWatched',
 							thumbnail: movie_f.thumbnail,
+							time_ago: moment(movie_f).fromNow(),
 							created: movie_f.created
 						});	
 					}

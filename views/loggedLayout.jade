@@ -16,19 +16,20 @@ html
           span.icon-bar
         a.navbar-brand(href='/') TvMoviesFQ
       #main-navigation.collapse.navbar-collapse.user-control
+        ul.nav.navbar-nav
+          li
+            a(href='/unwatchedMovies') Watchlist
+          li
+            a(href='/watchedMovies') Movies watched
+          li
+            a(href='/friends') Friends
+          
         ul.nav.navbar-nav.navbar-right
           img(src=user_thumbnail)
           li.dropdown
             a.dropdown-toggle(data-toggle="dropdown", href='#')= username
               span.caret
             ul.dropdown-menu(role="menu")
-              li
-                a(href='/unwatchedMovies') Watchlist
-              li
-                a(href='/watchedMovies') Movies watched
-              li
-                a(href='/friends') Friends
-              li.divider
               li
                 a(href='/logout') Logout
     .container
