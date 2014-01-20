@@ -7,9 +7,12 @@
             .row
                 .col-md-12
                     p #{movie.overview}
-            .row
                 .col-md-12
+                    p 
+                        strong Rating: #{movie.vote_average}
+                .col-md-12.fluid-wrapper 
                     iframe(width='550', height='413', src="#{movie.trailer_url}", frameborder="0")
+
         .modal-footer
             form.pull-left.add-unwatched-control(role="form", action="/addWatchedMovie", method="POST")         
                 .form-group
