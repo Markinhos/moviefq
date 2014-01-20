@@ -7,7 +7,6 @@ var Movies = new mongoose.Schema({
 	title: String,
 	overview: String,
 	release_date: Date,
-	rating: Number,
 	thumbnail: String,
 	moviedb_id: String,
 	created: {type: Date, default: Date.now},

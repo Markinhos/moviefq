@@ -12,6 +12,8 @@ MovieModel = function(_movieProvider){
 };
 
 
+youtube_url = '//www.youtube.com/embed/';
+
 
 MovieModel.prototype.addWatchedMovie = function(user_id, movie_id, callback){
 	var self = this;
@@ -54,6 +56,23 @@ MovieModel.prototype.listWatchedTagMovies = function(user_id, tagName, callback)
 
 MovieModel.prototype.listUnwatchedTagMovies = function(user_id, tagName, callback){
 	this._listTags(user_id, tagName, 'moviesUnwatched', callback);
+};
+
+MovieModel.prototype.getMovie = function(moviedb_id, callback) {
+	var self = this;
+	this.movieProvider.movieInfo({ id : moviedb_id}, function(err, movie) {
+		if (err) callback(err);
+		else{
+			console.log("Movie " + JSON.stringify(movie, null, 2));
+			self.movieProvider.movieTrailers({id : moviedb_id}, function(err, trailers){
+				console.log("trailers " + JSON.stringify(trailers, null, 2) );
+				if(trailers.youtube.length > 0){
+					movie.trailer_url = youtube_url + trailers.youtube[0].source;
+				}
+				callback(null, movie);
+			});
+		}
+	});	
 };
 
 MovieModel.prototype.getMoviesUser = function(user_id, callback){
@@ -112,7 +131,6 @@ MovieModel.prototype._addMovie = function(user_id, movie_id, type, callback) {
 			var movie = _.find(user.profile[type], {moviedb_id : movie_id});
 			if (!movie) {
 				self.movieProvider.movieInfo({ id : movie_id}, function(err, movie) {
-					//console.log("MOVIE INFO " + JSON.stringify(movie, null, 2));
 					if (err) callback(err);
 					else{
 						var newIndex = user.profile[type].push({

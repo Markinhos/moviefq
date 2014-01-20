@@ -79,3 +79,10 @@ exports.searchMovie = function(req, res){
 		res.render('moviesList', { title: 'Movie search', movies: result, movie_search: true });
 	});
 };
+
+exports.getMovie = function(req, res){	
+	movieModel.getMovie(req.params.moviedbId, function(err, _movie){
+		if(err) console.log("Error " + err);
+		res.render('movieInfo', {title: 'Movies from user', movie: _movie });
+	});
+}

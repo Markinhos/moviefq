@@ -128,7 +128,7 @@ UserModel.prototype.feed = function(user_id, callback){
 							type: 'movieUnwatched',
 							moviedb_id : movie_f.moviedb_id,
 							thumbnail: movie_f.thumbnail,
-							time_ago: moment(movie_f).fromNow(),
+							time_ago: moment(movie_f.created).fromNow(),
 							created: movie_f.created
 						});	
 					}
@@ -144,7 +144,7 @@ UserModel.prototype.feed = function(user_id, callback){
 							moviedb_id : movie_f.moviedb_id,
 							type: 'movieWatched',
 							thumbnail: movie_f.thumbnail,
-							time_ago: moment(movie_f).fromNow(),
+							time_ago: moment(movie_f.created).fromNow(),
 							created: movie_f.created
 						});	
 					}

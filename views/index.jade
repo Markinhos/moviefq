@@ -9,20 +9,24 @@ block content
     #feed
         each movie in movies
             .media.well
-                a.pull-left.thumbnail(href="#")
-                    img.media-object(src="#{mdb_imgurl + movie.thumbnail}", alt="{movie.movie}")
+                a.pull-left.thumbnail(data-toggle="modal", data-target="#movieModal-#{movie.moviedb_id}", href="/movie/#{movie.moviedb_id}")
+                    img.media-object(src="#{mdb_imgurl + movie.thumbnail}", alt="#{movie.movie}")
                 .media-body
 
                     if (movie.type == 'movieWatched')
                         p
                             a(href="/user/#{movie.user_id}")
-                                strong #{movie.username} 
-                            | has watched #{movie.movie}
+                                strong #{movie.username}
+                            |  has watched 
+                            a(data-toggle="modal", data-target="#movieModal-#{movie.moviedb_id}", href="/movie/#{movie.moviedb_id}") #{movie.movie}
                         p #{movie.time_ago}
                     if (movie.type == 'movieUnwatched')
                         p
                             a(href="/user/#{movie.user_id}")
-                                strong #{movie.username} 
-                            | wants to watch #{movie.movie}
+                                strong #{movie.username}
+                            |  wants to watch 
+                            a(data-toggle="modal", data-target="#movieModal-#{movie.moviedb_id}", href="/movie/#{movie.moviedb_id}") #{movie.movie}
                         p #{movie.time_ago}
 
+
+            div.modal.fade(id="movieModal-#{movie.moviedb_id}", tabIndex="-1", role="dialog", aria-labelledby="myLabel", aria-hidden="true")

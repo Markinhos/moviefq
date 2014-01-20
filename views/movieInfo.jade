@@ -1,0 +1,22 @@
+.modal-dialog
+    .modal-content
+        .modal-header
+            button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+            h4 #{movie.original_title}
+        .modal-body         
+            .row
+                .col-md-12
+                    p #{movie.overview}
+            .row
+                .col-md-12
+                    iframe(width='550', height='413', src="#{movie.trailer_url}", frameborder="0")
+        .modal-footer
+            form.pull-left.add-unwatched-control(role="form", action="/addWatchedMovie", method="POST")         
+                .form-group
+                    input#addUnwatchedMovie.form-control(type="hidden", value="#{movie.id}", name="id")                            
+                    button.btn.btn-success.btn-sm(type="submit") I've watched it!
+
+            form.add-unwatched-control(role="form", action="/addUnwatchedMovie", method="POST")
+                .form-group
+                    input#addWatchedMovie.form-control(type="hidden", value="#{movie.id}", name="id")
+                    button.btn.btn-primary.btn-sm(type="submit") I want to watch it!

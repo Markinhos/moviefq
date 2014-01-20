@@ -96,6 +96,7 @@ app.get('/login', user.loginGet);
 app.get('/logout', user.logout);
 app.get('/friends', checkAuth, user.friends);
 app.get('/user/:userId', checkAuth, movie.getMoviesUser);
+app.get('/movie/:moviedbId', checkAuth, movie.getMovie);
 app.get('/follow-friends', checkAuth, user.add_friends);
 app.get('/watched-movies/tag/:tagName', checkAuth, movie.listWatchedTagMovies);
 app.get('/unwatched-movies/tag/:tagName', checkAuth, movie.listUnwatchedTagMovies);

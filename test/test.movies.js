@@ -52,6 +52,16 @@ describe('Movies', function(){
 		});
 	});
 
+	it('Movie Info', function(done){
+		movieModel.getMovie(movie_fixture_id, function(err, movie){
+			if(err) done(err);
+			else {				
+				movie.should.have.property('original_title', 'Daredevil');
+				done();
+					
+			}
+		});
+	});
 	it('Add one unwatched movie', function(done){
 		movieModel.addUnwatchedMovie(user_f._id, movie_fixture_id, function(err, movie){
 			if(err) done(err);
