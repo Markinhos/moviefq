@@ -209,6 +209,19 @@ describe('Users CRUD operations', function(){
 		});
 	});
 
+
+	it('upload photo to aws', function(done){
+
+		userModel.addUser(user_data, function(err, user){
+			if (err) done(err);
+			userModel.uploadPhoto(user._id,{}, function(err, result){
+				console.log("Results " + result);
+				done();
+			});
+		});
+
+	});
+
 	
 
 });

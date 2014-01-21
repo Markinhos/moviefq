@@ -74,6 +74,13 @@ exports.feed = function(req, res){
 	});
 };
 
+exports.uploadPhoto = function(req, res){
+	console.log("FILES " + JSON.stringify(req.files, null, 2));
+	userModel.uploadPhoto(req.user._id, req.files, function(err, modified_user){
+		res.redirect("/settings");
+	});
+};
+
 exports.modifySettings = function(req, res){
 	userModel.modifyData(req.user._id, req.param('display_name'), req.param('email'), function(err, modified_user){
 		res.redirect("/settings");

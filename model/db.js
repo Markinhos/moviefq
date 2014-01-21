@@ -16,6 +16,12 @@ var Movies = new mongoose.Schema({
 	hidden: { type: Boolean, default: false }
 });
 
+var Comments = new mongoose.Schema({
+	text: String,
+	owner: {type: Schema.ObjectId, ref: Users},
+	created: {type: String, default: Date.now}
+});
+
 var Users = new mongoose.Schema({
 	username: {type: String, required: true},
 	name: { type: String },

@@ -14,7 +14,8 @@ var express = require('express')
   , path = require('path')
   , mdbconfig = require('./modules/moviedbConfiguration')
   , passport = require('passport')
-  , Facebook = require('facebook-node-sdk');
+  , Facebook = require('facebook-node-sdk')
+  , AWS = require('aws-sdk');
 
 var app = express();
 
@@ -121,14 +122,16 @@ app.post('/login', auth);
 app.post('/signup', user.signupPost);
 app.post('/followUser', checkAuth, user.followUser);
 app.post('/modify-settings', checkAuth, user.modifySettings);
+app.post('/upload-photo', checkAuth, user.uploadPhoto);
 app.post('/unfollowUser', checkAuth, user.unfollowUser);
 app.post('/addWatchedMovie', checkAuth, movie.addWatchedMovie);
 app.post('/addUnwatchedMovie', checkAuth, movie.addUnwatchedMovie);
 app.post('/deleteWatchedMovie', checkAuth, movie.deleteWatchedMovie);
 
 
-var server = http.createServer(app)
+var server = http.createServer(app);
 
+AWS.config.update({region: 'eu-west-1'});
 
 var passportConfig = require('./modules/passportConfig')(require('os').hostname, app.get('port'));
 

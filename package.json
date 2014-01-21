@@ -19,7 +19,8 @@
     "stylus": "~0.42.0",
     "facebook-node-sdk": "~0.2.0",
     "async": "~0.2.9",
-    "moment": "~2.5.0"
+    "moment": "~2.5.0",
+    "aws-sdk": "~2.0.0-rc8"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

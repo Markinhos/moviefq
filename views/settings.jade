@@ -1,23 +1,25 @@
 extends loggedLayout
 
 block content
-	h1 Settings
+    h1 Settings
 
-	.row
-		.col-md-6			
-			form(method="POST", action="/modify-settings", role="form")
-				.form-group
-					label(for="inputAvatar") Profile picture
-					img.thumbnail(src="#{user.profile.profile_image_url}")
-					input(type="file", id="inputAvatar")
+    .row
+        .col-md-6           
+            form.avatar-form(method="POST", action="/upload-photo", role="form", enctype="multipart/form-data")
+                .form-group
+                    label(for="inputAvatar") Profile picture
+                    img.thumbnail(src="#{user.profile.profile_image_url}")
+                    input(type="file", name="profileData", id="inputAvatar")
+                button.btn.btn-default(type="Submit") Upload
 
-				.form-group
-					label(for="diplayName") Display Name					
-					input.form-control(type="text", id="diplayName", name="display_name", value="#{user.name}")
+            form(method="POST", action="/modify-settings", role="form")
+                .form-group
+                    label(for="diplayName") Display Name                    
+                    input.form-control(type="text", id="diplayName", name="display_name", value="#{user.name}")
 
-				.form-group
-					label(for="email") Email
-					input.form-control(type="text", id="email", name="email", value="#{user.email}")
+                .form-group
+                    label(for="email") Email
+                    input.form-control(type="text", id="email", name="email", value="#{user.email}")
 
 
-				button.btn.btn-default(type="Submit") Submit
+                button.btn.btn-default(type="Submit") Save

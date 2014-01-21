@@ -2,7 +2,9 @@ var cryptoHelper = require('./../modules/crypto-helper')
 	, mongoose = require('mongoose')
 	, _ = require('lodash')
 	, async = require('async')
-	, moment = require('moment');
+	, moment = require('moment')
+	, AWS = require('aws-sdk')
+	, fs = require('fs');
 
 User = mongoose.model('User');
 
@@ -15,14 +17,32 @@ UserModel.prototype.findOne = function(data, callback){
 	});
 };
 
-UserModel.prototype.modifyData = function(user_id, displayName, email, callback){
-	User.findById(user_id, function(err, user){
-		if(displayName) user.name = displayName
-		if(email) user.email = email
+UserModel.prototype.modifyData = function(user_id, displayName, email, picture, callback){
+	var self=this;
+	User.findById(user_id, function(err, user){		
+		if(displayName) user.name = displayName;
+		if(email) user.email = email;
 		user.save(function(err, modified_user){
 			if(err) callback(err);
 			callback(null, modified_user);
 		});
+	});
+};
+
+
+UserModel.prototype.uploadPhoto = function(user_id, data, callback){
+	var self=this;
+	User.findById(user_id, function(err, user){
+		if(data) {
+			self._uploadPhoto(user._id, data.profileData, function(err, data){
+				if(err) callback(err);
+				user.profile.profile_image_url = 'https://s3-eu-west-1.amazonaws.com/tvmoviefq/' + user._id;
+				user.save(function(err, modified_user){
+					if(err) callback(err);
+					callback(null, modified_user);
+				});
+			});
+		}
 	});
 };
 
@@ -175,7 +195,27 @@ UserModel.prototype.feed = function(user_id, callback){
 		);
 		
 	});
-}
+};
+
+UserModel.prototype._uploadPhoto = function(user_id, data, callback){
+	fs.readFile(data.path, function (err, dataP) {
+		if(err) callback(err);
+		var s3bucket = new AWS.S3({params: {Bucket: 'tvmoviefq'}});
+		s3bucket.createBucket(function() {
+		    var data = {Key: user_id.toString(), Body: dataP};
+		    s3bucket.putObject(data, function(err, data) {
+		        if (err) {
+		      		console.log("Error uploading data: ", err);
+		      		callback(err);
+		    	} 
+		    	else {
+		      		console.log("Successfully uploaded data to myBucket/myKey: " + JSON.stringify(data));
+		      		callback(null, data);
+		    	}
+		  	});
+		});	  
+	});	
+};
 
 UserModel.prototype.listFBfriends = function(user_id, callback){
 
