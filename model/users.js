@@ -17,7 +17,7 @@ UserModel.prototype.findOne = function(data, callback){
 	});
 };
 
-UserModel.prototype.modifyData = function(user_id, displayName, email, picture, callback){
+UserModel.prototype.modifyData = function(user_id, displayName, email, callback){
 	var self=this;
 	User.findById(user_id, function(err, user){		
 		if(displayName) user.name = displayName;

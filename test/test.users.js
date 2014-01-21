@@ -5,7 +5,7 @@ var should = require('should')
 	, mongoose = require('mongoose');
 
 
-describe('Users CRUD operations', function(){
+describe('Users operations', function(){
 
 	User = mongoose.model('User');
 
@@ -208,20 +208,5 @@ describe('Users CRUD operations', function(){
 			});
 		});
 	});
-
-
-	it('upload photo to aws', function(done){
-
-		userModel.addUser(user_data, function(err, user){
-			if (err) done(err);
-			userModel.uploadPhoto(user._id,{}, function(err, result){
-				console.log("Results " + result);
-				done();
-			});
-		});
-
-	});
-
-	
 
 });

@@ -63,9 +63,7 @@ MovieModel.prototype.getMovie = function(moviedb_id, callback) {
 	this.movieProvider.movieInfo({ id : moviedb_id}, function(err, movie) {
 		if (err) callback(err);
 		else{
-			console.log("Movie " + JSON.stringify(movie, null, 2));
 			self.movieProvider.movieTrailers({id : moviedb_id}, function(err, trailers){
-				console.log("trailers " + JSON.stringify(trailers, null, 2) );
 				if(trailers.youtube.length > 0){
 					movie.trailer_url = youtube_url + trailers.youtube[0].source;
 				}

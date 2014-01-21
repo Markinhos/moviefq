@@ -50,6 +50,16 @@ describe('Feed operations', function(){
 		});
 	});
 
+	afterEach(function(done){
+
+		moviesDB.movieInfo.restore();
+		moviesDB.searchMovie.restore();
+		User.remove({}, function(err){
+			if (err) done(err);
+			done();
+		});
+	});
+
 
 	it('test feed', function(done){
 		userModel.addUser(user_data, function(err, user){

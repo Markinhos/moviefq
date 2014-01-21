@@ -28,6 +28,10 @@ describe('Movies', function(){
 			.stub(moviesDB, 'movieInfo')
 			.yields(null, fixtures.movies.Daredevil);
 
+		sinon
+			.stub(moviesDB, 'movieTrailers')
+			.yields(null, fixtures.trailers.trailer1)
+
 		User = mongoose.model('User');
 		User.create({
 			username: 'paco',
@@ -46,6 +50,7 @@ describe('Movies', function(){
 
 		moviesDB.movieInfo.restore();
 		moviesDB.searchMovie.restore();
+		moviesDB.movieTrailers.restore();
 		User.remove({}, function(err){
 			if (err) done(err);
 			done();
