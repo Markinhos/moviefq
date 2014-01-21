@@ -1,9 +1,10 @@
 .row.media.movie
-    .col-sm-1.col-xs-12
-        a.pull-left.thumbnail(data-toggle="modal", data-target="#movieModal-#{movie.id}", href="/movie/#{movie.moviedb_id}")        
-            unless (movie_search)
+    .col-sm-1.col-xs-12       
+        unless (movie_search)
+            a.pull-left.thumbnail(data-toggle="modal", data-target="#movieModal-#{movie.id}", href="/movie/#{movie.moviedb_id}") 
                 img.media-object.movie-thumbnail(src="#{mdb_imgurl + movie.thumbnail}", alt="movie")
-            else
+        else
+            a.pull-left.thumbnail(data-toggle="modal", data-target="#movieModal-#{movie.id}", href="/movie/#{movie.id}") 
                 unless (movie.poster_path === null)                    
                     img.media-object.movie-thumbnail(src="#{mdb_imgurl + movie.poster_path}", alt="movie")
                 else
