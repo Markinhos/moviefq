@@ -98,7 +98,7 @@ UserModel.prototype.unfollowFriend = function(user_id, friend_id, callback){
 };
 
 UserModel.prototype.listFollowing = function(user_id, callback){
-	User.findById(user_id).populate('profile.following.user_following', 'username _id').exec(function(err, user){
+	User.findById(user_id).populate('profile.following.user_following', 'username _id profile.profile_image_url').exec(function(err, user){
 		if (err) callback(err);
 		callback(null, user.profile.following);
 	});

@@ -21,8 +21,6 @@ exports.movieDBconfiguration = function(callback){
 configureMovieDB = function(callback){
 	mdb.configuration(function(err, configuration){
 		if(err) callback(err);
-
-	  	console.log("other config " + JSON.stringify(configuration, null, 2));
 		callback(null, configuration);
 	});
 }

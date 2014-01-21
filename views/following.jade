@@ -11,16 +11,22 @@ block content
                     if(isAddFriendsView)
                         .avatar
                             a.pull-left.thumbnail(href="/user/#{user._id}")
-                                img.media-object.profile-thumbnail(src="/img/no-avatar.png")
+                                if(user.profile.profile_image_url)
+                                    img.media-object.profile-thumbnail(src="#{user.profile.profile_image_url}")
+                                else    
+                                    img.media-object.profile-thumbnail(src="/img/no-avatar.png")
                         p.friend-name #{user.username}
                         form(role="form", action="/followUser", method="POST")
                             .form-group
                                 input.form-control(type="hidden", value="#{user._id}", name="follow_id")
                                 button.btn.btn-primary.btn-sm(type="submit") Follow!
                     if(isFollowingView)
-                        .avatar
+                        .avatar                            
                             a.pull-left.thumbnail(href="/user/#{user.user_following._id}")
-                                img.media-object.profile-thumbnail(src="/img/no-avatar.png")
+                                if(user.user_following.profile.profile_image_url)
+                                    img.media-object.profile-thumbnail(src="#{user.user_following.profile.profile_image_url}")
+                                else    
+                                    img.media-object.profile-thumbnail(src="/img/no-avatar.png")
                         p.friend-name #{user.user_following.username}
                         form(role="form", action="/unfollowUser", method="POST")
                             .form-group
