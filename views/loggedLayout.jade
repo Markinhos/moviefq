@@ -27,11 +27,14 @@ html
         ul.nav.navbar-nav.navbar-right
           img(src=user_thumbnail)
           li.dropdown
-            a.dropdown-toggle(data-toggle="dropdown", href='#')= username
+            a.dropdown-toggle(data-toggle="dropdown", href='#')= displayName
               span.caret
             ul.dropdown-menu(role="menu")
               li
-                a(href='/logout') Logout
+                a(href='/settings') Settings 
+              li.divider   
+              li
+                a(href='/logout') Logout          
     .container
       block content
 

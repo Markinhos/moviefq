@@ -12,7 +12,18 @@ UserModel.prototype.findOne = function(data, callback){
 	User.findOne(data, function(err, user){
 		if (err) callback(err);
 		callback(null, user);
-	})
+	});
+};
+
+UserModel.prototype.modifyData = function(user_id, displayName, email, callback){
+	User.findById(user_id, function(err, user){
+		if(displayName) user.name = displayName
+		if(email) user.email = email
+		user.save(function(err, modified_user){
+			if(err) callback(err);
+			callback(null, modified_user);
+		});
+	});
 };
 
 UserModel.prototype.addUser = function(data, callback){

@@ -72,6 +72,20 @@ describe('Users CRUD operations', function(){
 		);
 	});
 
+	it('modify data user', function(done){
+		userModel.addUser(user_data, function(err, user){
+			if (err) done(err);
+			else {
+				userModel.modifyData(user._id, 'new_name', 'new_email@test.com', function(err, modified_user){
+					if(err) done(err);
+					modified_user.should.have.property('name','new_name');
+					modified_user.should.have.property('email','new_email@test.com');
+					done();
+				});
+			}
+		});		
+	});
+
 	it('add one user with a taken email', function(done){
 		userModel.addUser(user_data
 			, function(err, user){

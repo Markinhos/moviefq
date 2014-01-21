@@ -57,7 +57,7 @@ app.configure(function(){
   app.use(passport.session());
   app.use(function(req, res, next){
     if(req.isAuthenticated()){
-      res.locals.username = req.user.username;
+      res.locals.displayName = req.user.name;
       res.locals.user_thumbnail = req.user.profile.profile_image_url;
       
       mdbconfig.movieDBconfiguration(function(err, config){
@@ -95,6 +95,7 @@ app.get('/signup', user.singupGet);
 app.get('/login', user.loginGet);
 app.get('/logout', user.logout);
 app.get('/friends', checkAuth, user.friends);
+app.get('/settings', checkAuth, user.settings);
 app.get('/user/:userId', checkAuth, movie.getMoviesUser);
 app.get('/movie/:moviedbId', checkAuth, movie.getMovie);
 app.get('/follow-friends', checkAuth, user.add_friends);
@@ -119,6 +120,7 @@ app.get('/facebook', Facebook.loginRequired(), function (req, res) {
 app.post('/login', auth);
 app.post('/signup', user.signupPost);
 app.post('/followUser', checkAuth, user.followUser);
+app.post('/modify-settings', checkAuth, user.modifySettings);
 app.post('/unfollowUser', checkAuth, user.unfollowUser);
 app.post('/addWatchedMovie', checkAuth, movie.addWatchedMovie);
 app.post('/addUnwatchedMovie', checkAuth, movie.addUnwatchedMovie);

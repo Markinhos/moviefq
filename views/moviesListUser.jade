@@ -6,8 +6,8 @@ block content
             h1 #{movies.username}          
                 if (tag)                
                     span.label.label-info.tag-title.tag
-                            i.fa.fa-tag 
-                            | #{tag}
+                        i.fa.fa-tag 
+                        | #{tag}
             form(role="form", action="/movieSearch", method="GET")
                 div.form-group
                     label(for="searchBox") What are you watching?

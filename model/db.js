@@ -20,6 +20,7 @@ var Users = new mongoose.Schema({
 	username: {type: String, required: true},
 	name: { type: String },
 	email: {type: String, lowercase: true},
+	verified: {type: Boolean, default: false},
 	fbId: String,
 	password: String,
 	created: {type: Date, default: Date.now},

@@ -62,9 +62,21 @@ exports.friends = function(req, res){
 	});
 };
 
+exports.settings = function(req, res){
+	userModel.findOne({_id: req.user._id}, function(err, user){
+		res.render('settings', {title: 'Settings', user: user});
+	});
+};
+
 exports.feed = function(req, res){
 	userModel.feed(req.user._id, function(err, results){
 		res.render('index', {title: 'Home', movies:  results});
+	});
+};
+
+exports.modifySettings = function(req, res){
+	userModel.modifyData(req.user._id, req.param('display_name'), req.param('email'), function(err, modified_user){
+		res.redirect("/settings");
 	});
 };
 
