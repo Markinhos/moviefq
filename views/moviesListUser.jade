@@ -12,9 +12,9 @@ block content
                 div.form-group
                     label(for="searchBox") What are you watching?
                     input#searchBox.form-control(type="text", name="movieName", placeholder="Type a movie or tv show")
-            h2 Unwatched movies
+            h4 Unwatched movies
             each movie in movies.moviesUnwatched
                 include partials/_movie
-            h2 Watched movies
+            h4 Watched movies
             each movie in movies.moviesWatched
                 include partials/_movie
