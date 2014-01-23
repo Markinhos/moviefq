@@ -27,7 +27,7 @@ a {
 /* 16:9 */
   height: 0;
 }
-.fluid-wrapper iframe {
+iframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -62,4 +62,9 @@ a {
   float: left;
   margin-right: 10px;
   width: 64px;
+}
+@media (min-width: 992px) {
+  .btm-links .logfacebook {
+    text-align: right;
+  }
 }
