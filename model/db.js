@@ -49,6 +49,11 @@ var Users = new mongoose.Schema({
 	}
 });
 
+var Activations = new mongoose.Schema({
+	email: String,
+	activated: {type: Boolean, default: false}
+});
+
 Users.path('email').validate(function(email){
    var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
    return emailRegex.test(email);
@@ -61,5 +66,6 @@ Users.method('validPassword', function(plainPass){
 	return cryptoHelper.validatePass(plainPass, this.password);
 });
 
+mongoose.model('Activation', Activations);
 mongoose.model('User', Users);
 mongoose.model('Movie', Movies);

@@ -50,6 +50,7 @@ UserModel.prototype.addUser = function(data, callback){
 	cryptoHelper.saltAndHash(data.password, function(hash){
 		User.create({
 			username: data.username,
+			name: data.name,
 			password: hash,
 			email: data.email
 		}, function(err, user){
