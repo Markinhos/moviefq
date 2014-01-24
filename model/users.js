@@ -60,6 +60,19 @@ UserModel.prototype.addUser = function(data, callback){
 	});
 };
 
+
+UserModel.prototype.changePassword = function(_email, password, callback){
+	cryptoHelper.saltAndHash(password, function(hash){
+		User.findOne({email: _email}, function(err, user){
+			user.password = hash;
+			user.save(function(err, user){
+				if (err) callback('Error updating the password ' + err);
+				else callback(null, user);
+			});
+		});
+	});
+};
+
 UserModel.prototype.listUsers = function(callback){	
 	User.find({}, 'username _id').exec(callback);
 };
@@ -217,6 +230,7 @@ UserModel.prototype._uploadPhoto = function(user_id, data, callback){
 		});	  
 	});	
 };
+
 
 UserModel.prototype.listFBfriends = function(user_id, callback){
 

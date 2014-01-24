@@ -130,3 +130,33 @@ exports.activateEmail = function(req, res){
 		res.redirect('/');
 	});
 };
+
+exports.passForgotten = function(req, res){
+	res.render('passForgotten');
+};
+
+exports.passForgottenPost = function(req, res){
+	require('crypto').randomBytes(8, function(ex, buf) {
+		var newPass = buf.toString('hex');
+
+		console.log("NEW pass " + newPass);
+
+		userModel.changePassword(req.body.email, newPass, function(err, user){	
+			if(err)	console.log("Error " + err);
+			sendgrid.send({
+			  	to: req.body.email,
+			  	from: "no-replay@tvmoviefq.com",
+			  	subject: 'Your new pass',
+			  	html: 'Hey '+ user.username + ' this is crazy but here is your new password : ' + newPass
+			  		 + 
+			  	 '\n,....so change it maybe.'
+			}, 
+			function(err, json) {
+				if (err) { return console.error(err); }
+
+			  	console.log(json);
+			  	res.render('passForgotten', { flash: 'Email sent'});
+			});
+		});
+	});
+};

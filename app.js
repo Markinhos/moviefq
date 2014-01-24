@@ -95,6 +95,7 @@ app.get('/about', checkAuth, routes.about);
 app.get('/signup', user.singupGet);
 app.get('/login', user.loginGet);
 app.get('/logout', user.logout);
+app.get('/pass-forgotten', user.passForgotten);
 app.get('/friends', checkAuth, user.friends);
 app.get('/settings', checkAuth, user.settings);
 app.get('/user/:userId', checkAuth, movie.getMoviesUser);
@@ -121,6 +122,7 @@ app.get('/facebook', Facebook.loginRequired(), function (req, res) {
 
 app.post('/login', auth);
 app.post('/signup', user.signupPost);
+app.post('/pass-forgotten', user.passForgottenPost);
 app.post('/followUser', checkAuth, user.followUser);
 app.post('/modify-settings', checkAuth, user.modifySettings);
 app.post('/upload-photo', checkAuth, user.uploadPhoto);
